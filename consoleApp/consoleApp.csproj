@@ -7,6 +7,11 @@
     <Nullable>disable</Nullable>
     <StartupObject>STAR.ConsoleApp.Program</StartupObject>
     <PlatformTarget>x64</PlatformTarget>
+    <ApplicationIcon>resources\favicon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="resources\favicon.ico" />
+  </ItemGroup>
 
 </Project>
