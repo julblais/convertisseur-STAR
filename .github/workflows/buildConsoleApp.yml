@@ -2,7 +2,7 @@ name: Build console app
 #Run every push
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 jobs:
   deploy-to-github-pages:
     # use ubuntu-latest image to run steps on
