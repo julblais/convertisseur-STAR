@@ -8,5 +8,10 @@ namespace STAR.Format
         {
 
         }
+
+        public static void RemoveSpaces(StringBuilder builder)
+        {
+
+        }
     }
 }
