@@ -23,7 +23,7 @@ namespace STAR.Format
         public string Format(string str)
         {
             var stringBuilder = new StringBuilder(str);
-            Format(new FormattingContext(stringBuilder));
+            Format(new FormattingContext(new[] {str}));
             return stringBuilder.ToString();
         }
     }
