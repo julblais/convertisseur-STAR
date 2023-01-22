@@ -22,9 +22,9 @@ namespace STAR.Format
 
         public string Format(string str)
         {
-            var stringBuilder = new StringBuilder(str);
-            Format(new FormattingContext(new[] {str}));
-            return stringBuilder.ToString();
+            var formattingContext = new FormattingContext(str);
+            Format(new FormattingContext(str));
+            return formattingContext.ToString();
         }
     }
 

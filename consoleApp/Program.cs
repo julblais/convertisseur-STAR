@@ -24,15 +24,11 @@ namespace STAR.ConsoleApp
             ParseArguments(args);
 
             var encoding = Encoding.GetEncoding(codePage);
-            List<string> contents = new();
+            string contents = string.Empty;
 
             using (var sr = new StreamReader(File.Open(filePath, FileMode.Open), encoding))
             {
-                string str;
-                while ((str = sr.ReadLine()) != null)
-                {
-                    contents.Add(str);
-                }
+                contents = sr.ReadToEnd();
             }
 
             var formatter = new Formatter()
