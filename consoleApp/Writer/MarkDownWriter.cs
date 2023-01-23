@@ -1,7 +1,6 @@
 ﻿using STAR.Format;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace STAR.Writer
 {
@@ -25,6 +24,7 @@ namespace STAR.Writer
                     writer.Write(command.text);
                     break;
                 case Command.Type.Newline:
+                    writer.WriteLine();
                     writer.WriteLine();
                     break;
                 case Command.Type.ItalicsBegin:
