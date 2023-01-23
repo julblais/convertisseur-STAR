@@ -46,6 +46,11 @@ namespace STAR.Format
             return new Command(Type.Text, text);
         }
 
+        public static Command CreateText(ReadOnlySpan<char> text)
+        {
+            return CreateText(text.ToString());
+        }
+
         public static Command CreateText(string text)
         {
             return new Command(Type.Text, text.AsMemory());

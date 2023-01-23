@@ -29,7 +29,8 @@ namespace STAR.ConsoleApp
 
             var rules = new Formatter.Rule[]
             {
-                Rules.FixEndline
+                Rules.FixEndline,
+                Rules.FixLongSpaces
             };
 
             using (var sr = new StreamReader(File.Open(filePath, FileMode.Open), encoding))
