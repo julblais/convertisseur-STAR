@@ -1,4 +1,5 @@
 ﻿using STAR.Format;
+using STAR.Writer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,7 +38,8 @@ namespace STAR.ConsoleApp
             var ctx = new FormattingContext(contents);
             formatter.Format(ctx);
 
-            Console.Write(ctx.ToString());
+            var markdown = MarkDownWriter.WriteCommands(ctx.commands);
+            Console.Write(markdown);
         }
     }
 }
