@@ -31,6 +31,11 @@ namespace STAR.Writer
                 case Command.Type.ItalicsEnd:
                     writer.Write('*');
                     break;
+                case Command.Type.NewSection:
+                    writer.WriteLine();
+                    writer.WriteLine("___");
+                    writer.WriteLine();
+                    break;
             }
         }
     }

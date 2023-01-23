@@ -31,6 +31,22 @@ namespace STAR.Format
             return SplitResult.CreateEmpty();
         }
 
+        public static ReadOnlySpan<char> StartTrimUntil(this ReadOnlySpan<char> text, ReadOnlySpan<char> delimiter)
+        {
+            var result = text.IndexOf(delimiter);
+            if (result != -1) //found
+                return text.Slice(result);
+            return text;
+        }
+
+        public static ReadOnlySpan<char> StartTrimUntil(this ReadOnlySpan<char> text, char delimiter)
+        {
+            var result = text.IndexOf(delimiter);
+            if (result != -1) //found
+                return text.Slice(result);
+            return text;
+        }
+
         public static IEnumerable<Command> ReplaceSubString(IEnumerable<Command> input, ReadOnlySpan<char> substring, Command toReplace)
         {
             var newCommands = new List<Command>();
