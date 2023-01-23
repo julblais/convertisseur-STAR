@@ -5,16 +5,20 @@ namespace STAR.Format
 {
     public static class Formatter
     {
-        public delegate void Rule(FormattingContext context);
+        public delegate IEnumerable<Command> Rule(IEnumerable<Command> input);
         public delegate void Writer(IEnumerable<Command> commands, TextWriter writer);
 
         public static IEnumerable<Command> ApplyTo(this IEnumerable<Rule> rules, string str)
         {
-            var formattingContext = new FormattingContext(str);
-            foreach (var rule in rules)
-                rule.Invoke(formattingContext);
+            IEnumerable<Command> commands = new Command[]
+            {
+                Command.CreateText(str)
+            };
 
-            return formattingContext.commands;
+            foreach (var rule in rules)
+                commands = rule.Invoke(commands);
+
+            return commands;
         }
 
         public static void WriteTo(this IEnumerable<Command> commands, Writer writer, TextWriter textWriter)

@@ -10,6 +10,7 @@ namespace STAR.Format
             Newline,
             ItalicsBegin,
             ItalicsEnd,
+            NewSection,
         }
 
         public readonly Type type;
@@ -46,6 +47,11 @@ namespace STAR.Format
             return new Command(Type.Text, text);
         }
 
+        public static Command CreateText(ReadOnlySpan<char> text)
+        {
+            return CreateText(text.ToString());
+        }
+
         public static Command CreateText(string text)
         {
             return new Command(Type.Text, text.AsMemory());
@@ -54,6 +60,11 @@ namespace STAR.Format
         public static Command CreateNewLine()
         {
             return new Command(Type.Newline);
+        }
+
+        public static Command CreateNewSection()
+        {
+            return new Command(Type.NewSection);
         }
 
         public static Command CreateItalicsBegin()
