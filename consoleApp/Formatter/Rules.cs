@@ -33,36 +33,25 @@ namespace STAR.Format
             return newCommands;
         }
 
+
         public static IEnumerable<Command> FixLongSpaces(IEnumerable<Command> input)
         {
             ReadOnlySpan<char> longSpace = "                 "; //17 spaces
+            return RulesHelpers.ReplaceSubString(input, longSpace, " ");
+        }
 
-            var newCommands = new List<Command>();
+        public static IEnumerable<Command> FixItalicsStart(IEnumerable<Command> input)
+        {
+            const char italicStart = '\t';
+            var command = Command.CreateItalicsBegin();
+            return RulesHelpers.ReplaceSubString(input, italicStart, command);
+        }
 
-            foreach(var command in input)
-            {
-                if (command.type == Command.Type.Text)
-                {
-                    var startSlice = 0;
-                    var text = command.textAsSpan;
-                    var result = text.IndexOf(longSpace);
-                    while (result != -1) //found
-                    {
-                        var part = text.Slice(startSlice, result);
-                        newCommands.Add(Command.CreateText(part));
-                        newCommands.Add(Command.CreateText(""));
-                        text = text.Slice(result + longSpace.Length);
-                        result = text.IndexOf(longSpace);
-                    }
-                    newCommands.Add(Command.CreateText(text));
-                }
-                else
-                {
-                    newCommands.Add(command);
-                }
-            }
-
-            return newCommands;
+        public static IEnumerable<Command> FixItalicsEnd(IEnumerable<Command> input)
+        {
+            const char italicsEnd = '\u000E';
+            var command = Command.CreateItalicsEnd();
+            return RulesHelpers.ReplaceSubString(input, italicsEnd, command);
         }
     }
 }
