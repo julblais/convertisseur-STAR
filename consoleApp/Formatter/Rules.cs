@@ -6,7 +6,7 @@ namespace STAR.Format
 {
     public static class Rules
     {
-        public static void FixEndline(FormattingContext context)
+        public static IEnumerable<Command> FixEndline(IEnumerable<Command> input)
         {
             const char endline = '\u001f';
 
@@ -14,7 +14,7 @@ namespace STAR.Format
             StringBuilder builder = new();
             var lineSeparator = new ReadOnlySpan<char>(endline);
 
-            foreach(var command in context.commands)
+            foreach(var command in input)
             {
                 var contents = command.textAsSpan;
                 foreach(var line in contents.EnumerateLines())
@@ -31,7 +31,7 @@ namespace STAR.Format
                 }
             }
 
-            context.SetCommands(newCommands);
+            return newCommands;
         }
     }
 }
