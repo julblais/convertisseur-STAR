@@ -11,11 +11,10 @@ namespace STAR.Format
         const string startGarbage = "\u0013\u0014\u0001\u0012";
         const string recordSection = "Record:  ";
 
-        public static IEnumerable<Command> FixEndline(IEnumerable<Command> input)
+        public static void FixEndline(IEnumerable<Command> input, ICollection<Command> output)
         {
             const char endline = '\u001f';
 
-            var newCommands = new List<Command>();
             var lineSeparator = new ReadOnlySpan<char>(endline);
 
             foreach (var command in input)
@@ -26,58 +25,50 @@ namespace STAR.Format
                     if (line.EndsWith(lineSeparator)) //can remove and skip to next
                     {
                         var text = line.TrimEnd(lineSeparator);
-                        newCommands.Add(Command.CreateText(text));
-                        newCommands.Add(Command.CreateNewLine());
+                        output.Add(Command.CreateText(text));
+                        output.Add(Command.CreateNewLine());
                     }
                     else
                     {
-                        newCommands.Add(Command.CreateText(line));
+                        output.Add(Command.CreateText(line));
                     }
                 }
             }
-
-            return newCommands;
         }
 
-
-        public static IEnumerable<Command> FixLongSpaces(IEnumerable<Command> input)
+        public static void FixLongSpaces(IEnumerable<Command> input, ICollection<Command> output)
         {
-            return RulesHelpers.ReplaceSubString(input, longSpace, " ");
+            RulesHelpers.ReplaceSubString(input, longSpace, " ", output);
         }
 
-        public static IEnumerable<Command> FixItalicsStart(IEnumerable<Command> input)
+        public static void FixItalicsStart(IEnumerable<Command> input, ICollection<Command> output)
         {
             var command = Command.CreateItalicsBegin();
-            return RulesHelpers.ReplaceSubString(input, italicStart, command);
+            RulesHelpers.ReplaceSubString(input, italicStart, command, output);
         }
 
-        public static IEnumerable<Command> FixItalicsEnd(IEnumerable<Command> input)
+        public static void FixItalicsEnd(IEnumerable<Command> input, ICollection<Command> output)
         {
             var command = Command.CreateItalicsEnd();
-            return RulesHelpers.ReplaceSubString(input, italicsEnd, command);
+            RulesHelpers.ReplaceSubString(input, italicsEnd, command, output);
         }
 
-        public static IEnumerable<Command> FixStartRecord(IEnumerable<Command> input)
+        public static void FixStartRecord(IEnumerable<Command> input, ICollection<Command> output)
         {
-            var newCommands = new List<Command>();
-
             foreach (var command in input)
             {
                 if (command.type == Command.Type.Text)
                 {
                     if (command.textAsSpan.CompareTo(startGarbage, StringComparison.InvariantCulture) != 0)
-                        newCommands.Add(command);
+                        output.Add(command);
                 }
                 else
-                    newCommands.Add(command);
+                    output.Add(command);
             }
-
-            return newCommands;
         }
 
-        public static IEnumerable<Command> AddRecordSections(IEnumerable<Command> input)
+        public static void AddRecordSections(IEnumerable<Command> input, ICollection<Command> output)
         {
-            var newCommands = new List<Command>();
             bool first = true;
 
             foreach (var command in input)
@@ -86,18 +77,16 @@ namespace STAR.Format
                 {
                     if (!first && command.textAsSpan.Contains(recordSection, StringComparison.InvariantCulture))
                     {
-                        newCommands.Add(Command.CreateNewSection());
-                        newCommands.Add(command);
+                        output.Add(Command.CreateNewSection());
+                        output.Add(command);
                     }
                     else
-                        newCommands.Add(command);
+                        output.Add(command);
                     first = false;
                 }
                 else
-                    newCommands.Add(command);
+                    output.Add(command);
             }
-
-            return newCommands;
         }
     }
 }
