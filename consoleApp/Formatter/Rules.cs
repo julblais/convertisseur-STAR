@@ -10,22 +10,28 @@ namespace STAR.Format
         {
             const char endline = '\u001f';
 
-            var output = new List<string>(context.contents.Count);
+            var newCommands = new List<Command>();
+            StringBuilder builder = new();
+            var lineSeparator = new ReadOnlySpan<char>(endline);
 
-            StringBuilder buffer = new StringBuilder();
-            foreach(var content in context.contents)
+            foreach(var command in context.commands)
             {
-                buffer.Append(content);
-                if (content.EndsWith(endline)) //can remove and skip to next
+                var contents = command.textAsSpan;
+                foreach(var line in contents.EnumerateLines())
                 {
-                    buffer.Remove(buffer.Length -1, 1);
-                    //buffer.AppendLine();
-                    output.Add(buffer.ToString());
-                    buffer = new StringBuilder();
+                    builder.Append(line);
+                    if (line.EndsWith(lineSeparator)) //can remove and skip to next
+                    {
+                        var text = builder.ToString().AsMemory();
+                        text = text.TrimEnd(lineSeparator);
+                        newCommands.Add(Command.CreateText(text));
+                        newCommands.Add(Command.CreateNewLine());
+                        builder.Clear();
+                    }
                 }
             }
 
-            context.contents = output;
+            context.SetCommands(newCommands);
         }
     }
 }

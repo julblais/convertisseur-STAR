@@ -1,23 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Collections.Generic;
 
 namespace STAR.Format
 {
     public class FormattingContext
     {
-        public IReadOnlyCollection<string> contents { get; set; }
+        public ReadOnlySpan<char> originalContent => m_OriginalContents.AsSpan();
+        public IReadOnlyList<Command> commands => m_Commands;
 
-        public FormattingContext(IReadOnlyCollection<string> contents)
+        readonly string m_OriginalContents;
+        IReadOnlyList<Command> m_Commands;
+
+        public FormattingContext(string content)
         {
-            this.contents = contents;
+            m_OriginalContents = content;
+            m_Commands = new List<Command> { Command.CreateText(content) };
         }
 
-        public override string ToString()
+        public IEnumerator<Command> GetEnumerator()
         {
-            var sb = new StringBuilder();
-            foreach(var str in contents)
-                sb.AppendLine(str);
-            return sb.ToString();
+            return commands.GetEnumerator();
+        }
+
+        public void SetCommands(IReadOnlyList<Command> commands)
+        {
+            m_Commands = commands;
         }
     }
 }

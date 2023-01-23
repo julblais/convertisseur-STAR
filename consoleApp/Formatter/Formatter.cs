@@ -1,39 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace STAR.Format
 {
-    public class Formatter
+    public static class Formatter
     {
-        List<Action<FormattingContext>> m_Rules = new List<Action<FormattingContext>>();
+        public delegate void Rule(FormattingContext context);
+        public delegate void Writer(IEnumerable<Command> commands, TextWriter writer);
 
-        public void AddRule(Action<FormattingContext> rule)
+        public static IEnumerable<Command> ApplyTo(this IEnumerable<Rule> rules, string str)
         {
-            m_Rules.Add(rule);
+            var formattingContext = new FormattingContext(str);
+            foreach (var rule in rules)
+                rule.Invoke(formattingContext);
+
+            return formattingContext.commands;
         }
 
-        public void Format(FormattingContext str)
+        public static void WriteTo(this IEnumerable<Command> commands, Writer writer, TextWriter textWriter)
         {
-            foreach (var rule in m_Rules)
-                rule.Invoke(str);
-
-        }
-
-        public string Format(string str)
-        {
-            var stringBuilder = new StringBuilder(str);
-            Format(new FormattingContext(new[] {str}));
-            return stringBuilder.ToString();
-        }
-    }
-
-    public static class FormatterBuilder
-    {
-        public static Formatter With(this Formatter formatter, Action<FormattingContext> rule)
-        {
-            formatter.AddRule(rule);
-            return formatter;
+            writer.Invoke(commands, textWriter);
         }
     }
 }
