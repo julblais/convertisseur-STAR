@@ -1,7 +1,6 @@
 ﻿using STAR.Format;
 using STAR.Writer;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -27,19 +26,25 @@ namespace STAR.ConsoleApp
             var encoding = Encoding.GetEncoding(codePage);
             string contents = string.Empty;
 
+
+            var rules = new Formatter.Rule[]
+            {
+                Rules.FixEndline
+            };
+
             using (var sr = new StreamReader(File.Open(filePath, FileMode.Open), encoding))
             {
                 contents = sr.ReadToEnd();
             }
 
-            var formatter = new Formatter()
-                .With(Rules.FixEndline);
+            var commands = rules.ApplyTo(contents);
 
-            var ctx = new FormattingContext(contents);
-            formatter.Format(ctx);
+            using (StreamWriter writer = new("output" + MarkDownWriter.extension))
+            {
+                commands.WriteTo(MarkDownWriter.WriteCommands, writer);
+            }
 
-            var markdown = MarkDownWriter.WriteCommands(ctx.commands);
-            Console.Write(markdown);
+            commands.WriteTo(MarkDownWriter.WriteCommands, Console.Out);
         }
     }
 }

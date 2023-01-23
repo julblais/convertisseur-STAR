@@ -1,36 +1,35 @@
 ﻿using STAR.Format;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace STAR.Writer
 {
     public static class MarkDownWriter
     {
-        public static string WriteCommands(IEnumerable<Command> commands)
-        {
-            StringBuilder builder = new StringBuilder();
+        public const string extension = ".md";
 
+        public static void WriteCommands(IEnumerable<Command> commands, TextWriter writer)
+        {
             foreach (Command command in commands)
             {
-                WriteCommand(builder, command);
+                WriteCommand(writer, command);
             }
-
-            return builder.ToString();
         }
 
-        static void WriteCommand(StringBuilder builder, in Command command)
+        static void WriteCommand(TextWriter writer, in Command command)
         {
             switch(command.type)
             {
                 case Command.Type.Text:
-                    builder.Append(command.text);
+                    writer.Write(command.text);
                     break;
                 case Command.Type.Newline:
-                    builder.AppendLine();
+                    writer.WriteLine();
                     break;
                 case Command.Type.ItalicsBegin:
                 case Command.Type.ItalicsEnd:
-                    builder.Append('*');
+                    writer.Write('*');
                     break;
             }
         }
