@@ -9,16 +9,23 @@ jobs:
     steps:
     # uses GitHub's checkout action to checkout code from the master branch
     - uses: actions/checkout@v3
-    # download bflat release
+    # download bflat
     - name: Download bflat
       uses: robinraju/release-downloader@v1.7
       with:
         repository: "bflattened/bflat"
         tag: "v7.0.1"
         fileName: "bflat-7.0.1-windows-x64.zip"
-    # Extract bflat here
+    # Extract bflat
     - name: Extract bflat
       run: Expand-Archive -Path bflat-7.0.1-windows-x64.zip -DestinationPath bflat
+    # download rcedit
+    - name: Download rcedit
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "electron/rcedit"
+        tag: "v1.1.1"
+        fileName: "rcedit-x64.exe"
     # create output dir
     - name: Create output dir
       run:  New-Item -Path .\output -ItemType Directory -Force
@@ -27,6 +34,9 @@ jobs:
       shell: pwsh
       run: |
         .\build-bflat.ps1
+    # change icon
+    - name: Change exe icon
+      run: .\rcedit.exe "ConvertisseurSTAR.exe" --set-icon "consoleApp\resources\favicon.ico"
     # Upload artifacts
     - name: Send Artifacts
       uses: actions/upload-artifact@v3.1.0
