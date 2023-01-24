@@ -4,3 +4,5 @@
 docs/*
 **/launchSettings.json
 **/*.csproj.user
+bflat/*
+output/*

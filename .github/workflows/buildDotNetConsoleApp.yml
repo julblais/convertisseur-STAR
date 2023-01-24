@@ -1,0 +1,29 @@
+name: Build console app - dotnet
+
+on:
+  workflow_call
+
+jobs:
+  Build-donet:
+    runs-on: windows-latest  #https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    steps:
+    # uses GitHub's checkout action to checkout code from the master branch
+    - uses: actions/checkout@v3
+    # sets up .NET Core SDK 3.1
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.x
+ # create output dir
+    - name: Create output dir
+      run:  New-Item -Path .\output -ItemType Directory -Force
+ # publishes .net project to the release folder
+    - name: Publish .NET Core Project
+      run:  dotnet publish consoleApp/consoleApp.csproj -c Release --nologo --output output
+ # Upload artifacts
+    - name: Send Artifacts
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: consoleApp-dotnet
+        path: |
+          ./output/
