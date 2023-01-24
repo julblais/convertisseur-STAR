@@ -54,8 +54,9 @@ namespace STAR.ConsoleApp
             }
 
             var commands = rules.ApplyTo(contents);
+            var fileName = Path.GetFileNameWithoutExtension(filePath);
 
-            using (StreamWriter writer = new("output" + MarkDownWriter.extension))
+            using (StreamWriter writer = new($"{fileName}.{MarkDownWriter.extension}"))
             {
                 commands.WriteTo(MarkDownWriter.WriteCommands, writer);
             }
