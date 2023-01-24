@@ -1,0 +1,40 @@
+name: Build console app - native
+#Run every push
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  Publish-project:
+    runs-on: windows-latest  #https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    steps:
+    # uses GitHub's checkout action to checkout code from the master branch
+    - uses: actions/checkout@v3
+    # download bflat release
+    - name: Download bflat
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "bflattened/bflat"
+        tag: "v7.0.1"
+        fileName: "bflat-7.0.1-windows-x64.zip"
+    # Extract bflat here
+    - name: Extract bflat
+      uses: montudor/action-zip@v1
+      with:
+        args: unzip -qq bflat-7.0.1-windows-x64.zip -d bflat
+    # create output dir
+    - name: Create output dir
+      run:  New-Item -Path .\output -ItemType Directory -Force
+    # publish with BFlat AOT
+    - name: Publish AOT Project with BFlat
+      shell: pwsh
+      run: |
+        .\build-bflat.ps1
+    # Upload artifacts
+    - name: Send Artifacts
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: consoleApp-native
+        path: |
+          ./output/
