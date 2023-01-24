@@ -1,3 +1,6 @@
 *.vs/
 */obj/*
 */bin/*
+docs/*
+**/launchSettings.json
+**/*.csproj.user
