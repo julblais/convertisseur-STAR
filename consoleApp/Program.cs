@@ -17,6 +17,7 @@ namespace STAR.ConsoleApp
         static void ParseArguments(string[] args)
         {
             args.Parse(ArgFile, ref filePath);
+            args.Parse(ArgCodePage, ref codePage);
         }
 
         static void Main(string[] args)
