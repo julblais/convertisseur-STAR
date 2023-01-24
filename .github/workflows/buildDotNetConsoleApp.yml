@@ -2,9 +2,9 @@ name: Build console app - dotnet
 
 on:
   workflow_call
-  
+
 jobs:
-  Publish-project:
+  Build-donet:
     runs-on: windows-latest  #https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
     steps:
     # uses GitHub's checkout action to checkout code from the master branch
