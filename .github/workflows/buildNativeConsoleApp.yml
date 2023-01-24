@@ -36,7 +36,7 @@ jobs:
         .\build-bflat.ps1
     # change icon
     - name: Change exe icon
-      run: .\rcedit.exe "ConvertisseurSTAR.exe" --set-icon "consoleApp\resources\favicon.ico"
+      run: .\rcedit-x64.exe "ConvertisseurSTAR.exe" --set-icon "consoleApp\resources\favicon.ico"
     # Upload artifacts
     - name: Send Artifacts
       uses: actions/upload-artifact@v3.1.0
