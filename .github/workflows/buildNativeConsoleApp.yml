@@ -18,7 +18,7 @@ jobs:
         fileName: "bflat-7.0.1-windows-x64.zip"
     # Extract bflat here
     - name: Extract bflat
-      run: Expand-Archive -Path bflat-7.0.1-windows-x64.zip -DestinationPath output
+      run: Expand-Archive -Path bflat-7.0.1-windows-x64.zip -DestinationPath bflat
     # create output dir
     - name: Create output dir
       run:  New-Item -Path .\output -ItemType Directory -Force
