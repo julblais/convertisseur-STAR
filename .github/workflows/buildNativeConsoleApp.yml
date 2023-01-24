@@ -20,7 +20,7 @@ jobs:
         fileName: "bflat-7.0.1-windows-x64.zip"
     # Extract bflat here
     - name: Extract bflat
-      run: 7z e bflat-7.0.1-windows-x64.zip -o bflat
+      run: 7z e bflat-7.0.1-windows-x64.zip -o./bflat
     # create output dir
     - name: Create output dir
       run:  New-Item -Path .\output -ItemType Directory -Force
