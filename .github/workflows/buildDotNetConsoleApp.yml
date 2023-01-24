@@ -21,7 +21,7 @@ jobs:
       run:  New-Item -Path .\output -ItemType Directory -Force
  # publishes .net project to the release folder
     - name: Publish .NET Core Project
-      run:  dotnet publish consoleApp/consoleApp.csproj -c Release -o release --nologo --output output
+      run:  dotnet publish consoleApp/consoleApp.csproj -c Release --nologo --output output
  # Upload artifacts
     - name: Send Artifacts
       uses: actions/upload-artifact@v3.1.0
