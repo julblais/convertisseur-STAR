@@ -2,7 +2,7 @@ name: Build console app - native
 
 on:
   workflow_call
-  
+
 jobs:
   Publish-project:
     runs-on: windows-latest  #https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
@@ -18,7 +18,7 @@ jobs:
         fileName: "bflat-7.0.1-windows-x64.zip"
     # Extract bflat here
     - name: Extract bflat
-      run: 7z e bflat-7.0.1-windows-x64.zip -o./bflat
+      run: Expand-Archive -Path bflat-7.0.1-windows-x64.zip -DestinationPath output
     # create output dir
     - name: Create output dir
       run:  New-Item -Path .\output -ItemType Directory -Force
