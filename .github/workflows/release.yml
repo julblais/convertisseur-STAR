@@ -1,0 +1,47 @@
+name: Release
+
+on: 
+  push:
+    tags:
+    - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  Invoke-Build:
+    name: Build console app
+    uses: ./.github/workflows/buildConsoleApp.yml
+  make-release:
+    name: Release console app
+    runs-on: ubuntu-latest
+    needs: Invoke-Build
+    permissions:
+      contents: write
+    steps:
+      - name: Download dotnet build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: consoleApp-dotnet
+          path: dotnet/
+      - name: Download native build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: consoleApp-native
+          path: native/
+      - name: Archive Dotnet Release
+        uses: thedoctor0/zip-release@main
+        with:
+          directory: dotnet
+          type: 'zip'
+          filename: 'ConvertisseurSTAR-dotnet.zip'
+      - name: Archive Native Release
+        uses: thedoctor0/zip-release@main
+        with:
+          directory: native
+          type: 'zip'
+          filename: 'ConvertisseurSTAR-native.zip'
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ConvertisseurSTAR-dotnet.zip
+            ConvertisseurSTAR-native.zip
+          
