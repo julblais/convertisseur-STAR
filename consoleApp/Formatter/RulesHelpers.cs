@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace STAR.Format
 {
@@ -47,11 +46,9 @@ namespace STAR.Format
             return text;
         }
 
-        public static IEnumerable<Command> ReplaceSubString(IEnumerable<Command> input, ReadOnlySpan<char> substring, Command toReplace)
+        public static void ReplaceSubString(CommandContext ctx, ReadOnlySpan<char> substring, Command toReplace)
         {
-            var newCommands = new List<Command>();
-
-            foreach (var command in input)
+            foreach (var command in ctx.input)
             {
                 if (command.type == Command.Type.Text)
                 {
@@ -59,34 +56,32 @@ namespace STAR.Format
                     var result = text.SplitInTwo(substring);
                     while (!result.IsEmpty()) //found
                     {
-                        newCommands.Add(Command.CreateText(result.first));
-                        newCommands.Add(toReplace);
+                        ctx.Add(Command.CreateText(result.first));
+                        ctx.Add(toReplace);
                         text = result.last;
                         result = text.SplitInTwo(substring);
                     }
-                    newCommands.Add(Command.CreateText(text));
+                    ctx.Add(Command.CreateText(text));
                 }
                 else
-                    newCommands.Add(command);
+                    ctx.Add(command);
             }
-
-            return newCommands;
         }
 
-        public static IEnumerable<Command> ReplaceSubString(IEnumerable<Command> input, ReadOnlySpan<char> substring, ReadOnlySpan<char> value)
+        public static void ReplaceSubString(CommandContext ctx, ReadOnlySpan<char> substring, ReadOnlySpan<char> value)
         {
             var command = Command.CreateText(value);
-            return ReplaceSubString(input, substring, command);
+            ReplaceSubString(ctx, substring, command);
         }
 
-        public static IEnumerable<Command> ReplaceSubString(IEnumerable<Command> input, char substring, ReadOnlySpan<char> value)
+        public static void ReplaceSubString(CommandContext ctx, char substring, ReadOnlySpan<char> value)
         {
-            return ReplaceSubString(input, new ReadOnlySpan<char>(substring), value);
+            ReplaceSubString(ctx, new ReadOnlySpan<char>(substring), value);
         }
 
-        public static IEnumerable<Command> ReplaceSubString(IEnumerable<Command> input, char substring, Command toReplace)
+        public static void ReplaceSubString(CommandContext ctx, char substring, Command toReplace)
         {
-            return ReplaceSubString(input, new ReadOnlySpan<char>(substring), toReplace);
+            ReplaceSubString(ctx, new ReadOnlySpan<char>(substring), toReplace);
         }
     }
 }

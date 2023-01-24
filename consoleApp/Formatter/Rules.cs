@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace STAR.Format
 {
@@ -11,14 +10,13 @@ namespace STAR.Format
         const string startGarbage = "\u0013\u0014\u0001\u0012";
         const string recordSection = "Record:  ";
 
-        public static IEnumerable<Command> FixEndline(IEnumerable<Command> input)
+        public static void FixEndline(CommandContext context)
         {
             const char endline = '\u001f';
 
-            var newCommands = new List<Command>();
             var lineSeparator = new ReadOnlySpan<char>(endline);
 
-            foreach (var command in input)
+            foreach (var command in context.input)
             {
                 var contents = command.textAsSpan;
                 foreach (var line in contents.EnumerateLines())
@@ -26,78 +24,68 @@ namespace STAR.Format
                     if (line.EndsWith(lineSeparator)) //can remove and skip to next
                     {
                         var text = line.TrimEnd(lineSeparator);
-                        newCommands.Add(Command.CreateText(text));
-                        newCommands.Add(Command.CreateNewLine());
+                        context.Add(Command.CreateText(text));
+                        context.Add(Command.CreateNewLine());
                     }
                     else
                     {
-                        newCommands.Add(Command.CreateText(line));
+                        context.Add(Command.CreateText(line));
                     }
                 }
             }
-
-            return newCommands;
         }
 
-
-        public static IEnumerable<Command> FixLongSpaces(IEnumerable<Command> input)
+        public static void FixLongSpaces(CommandContext context)
         {
-            return RulesHelpers.ReplaceSubString(input, longSpace, " ");
+            RulesHelpers.ReplaceSubString(context, longSpace, " ");
         }
 
-        public static IEnumerable<Command> FixItalicsStart(IEnumerable<Command> input)
+        public static void FixItalicsStart(CommandContext context)
         {
             var command = Command.CreateItalicsBegin();
-            return RulesHelpers.ReplaceSubString(input, italicStart, command);
+            RulesHelpers.ReplaceSubString(context, italicStart, command);
         }
 
-        public static IEnumerable<Command> FixItalicsEnd(IEnumerable<Command> input)
+        public static void FixItalicsEnd(CommandContext context)
         {
             var command = Command.CreateItalicsEnd();
-            return RulesHelpers.ReplaceSubString(input, italicsEnd, command);
+            RulesHelpers.ReplaceSubString(context, italicsEnd, command);
         }
 
-        public static IEnumerable<Command> FixStartRecord(IEnumerable<Command> input)
+        public static void FixStartRecord(CommandContext context)
         {
-            var newCommands = new List<Command>();
-
-            foreach (var command in input)
+            foreach (var command in context.input)
             {
                 if (command.type == Command.Type.Text)
                 {
                     if (command.textAsSpan.CompareTo(startGarbage, StringComparison.InvariantCulture) != 0)
-                        newCommands.Add(command);
+                        context.Add(command);
                 }
                 else
-                    newCommands.Add(command);
+                    context.Add(command);
             }
-
-            return newCommands;
         }
 
-        public static IEnumerable<Command> AddRecordSections(IEnumerable<Command> input)
+        public static void AddRecordSections(CommandContext context)
         {
-            var newCommands = new List<Command>();
             bool first = true;
 
-            foreach (var command in input)
+            foreach (var command in context.input)
             {
                 if (command.type == Command.Type.Text)
                 {
                     if (!first && command.textAsSpan.Contains(recordSection, StringComparison.InvariantCulture))
                     {
-                        newCommands.Add(Command.CreateNewSection());
-                        newCommands.Add(command);
+                        context.Add(Command.CreateNewSection());
+                        context.Add(command);
                     }
                     else
-                        newCommands.Add(command);
+                        context.Add(command);
                     first = false;
                 }
                 else
-                    newCommands.Add(command);
+                    context.Add(command);
             }
-
-            return newCommands;
         }
     }
 }
