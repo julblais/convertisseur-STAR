@@ -15,9 +15,7 @@ jobs:
   Create-Release:
     name: Release console app
     runs-on: ubuntu-latest
-    needs: |
-      Invoke-Build-dotnet
-      Invoke-Build-native
+    needs: [Invoke-Build-dotnet, Invoke-Build-native]
     permissions:
       contents: write
     steps:
