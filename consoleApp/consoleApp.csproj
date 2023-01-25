@@ -6,7 +6,11 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <StartupObject>STAR.ConsoleApp.Program</StartupObject>
+    
+    <PublishTrimmed>true</PublishTrimmed>
     <PlatformTarget>x64</PlatformTarget>
+    <PublishSingleFile>true</PublishSingleFile>
+
     <ApplicationIcon>resources\favicon.ico</ApplicationIcon>
     <Company>julblais</Company>
     <Product>ConvertisseurStar</Product>
