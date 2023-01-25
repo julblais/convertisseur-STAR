@@ -37,6 +37,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            dotnet/ConvertisseurSTAR-dotnet.zip
-            native/ConvertisseurSTAR-native.zip
+            ConvertisseurSTAR-dotnet.zip
+            ConvertisseurSTAR-native.zip
           
