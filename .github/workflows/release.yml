@@ -30,17 +30,9 @@ jobs:
           name: consoleApp-native
           path: native/
       - name: Archive Dotnet Release
-        uses: thedoctor0/zip-release@main
-        with:
-          directory: dotnet
-          type: 'zip'
-          filename: 'ConvertisseurSTAR-dotnet.zip'
+        run: Compress-Archive -Path dotnet\*.* -DestinationPath ConvertisseurSTAR-dotnet.zip -CompressionLevel optimal
       - name: Archive Native Release
-        uses: thedoctor0/zip-release@main
-        with:
-          directory: native
-          type: 'zip'
-          filename: 'ConvertisseurSTAR-native.zip'
+        run: Compress-Archive -Path native\*.* -DestinationPath ConvertisseurSTAR-native.zip -CompressionLevel optimal
       - name: Upload Release
         uses: softprops/action-gh-release@v1
         with:
