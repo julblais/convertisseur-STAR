@@ -36,5 +36,5 @@ jobs:
         with:
           files: |
             ConvertisseurSTAR-dotnet.zip
-            ConvertisseurSTAR.exe
+            native/ConvertisseurSTAR.exe
           
