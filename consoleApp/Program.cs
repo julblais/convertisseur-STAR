@@ -10,12 +10,17 @@ namespace STAR.ConsoleApp
     {
         const string version = "0.1.0";
 
-        static readonly string ArgHelp = "--help";
-        static readonly string ArgFile = "--file";
-        static readonly string ArgCodePage = "--codepage";
-        static readonly string ArgVersion = "--version";
+        const string ArgHelp = "--help";
+        const string ArgFile = "--file";
+        const string ArgCodePage = "--codepage";
+        const string ArgVersion = "--version";
+        const string ArgOutputFormat = "--format";
+
+        const string WordStringFormat = "word";
+        const string MarkdownStringFormat = "markdown";
 
         static string filePath;
+        static string outputFormat = WordStringFormat;
         static int codePage = 28591; //ISO-8859-1 Western European
         static bool displayVersion;
         static bool displayHelp;
@@ -23,9 +28,10 @@ namespace STAR.ConsoleApp
         static void ParseArguments(string[] args)
         {
             args.Parse(ArgHelp, ref displayHelp);
+            args.Parse(ArgVersion, ref displayVersion);
             args.Parse(ArgFile, ref filePath);
             args.Parse(ArgCodePage, ref codePage);
-            args.Parse(ArgVersion, ref displayVersion);
+            args.Parse(ArgOutputFormat, ref outputFormat);
         }
 
         static void Main(string[] args)
@@ -43,6 +49,14 @@ namespace STAR.ConsoleApp
                 return;
             }
 
+            ConvertFile(filePath, outputFormat);
+
+            Console.WriteLine();
+            Console.WriteLine("Done!");
+        }
+
+        static void ConvertFile(string filePath, string format)
+        {
             var encoding = Encoding.GetEncoding(codePage);
             string contents = string.Empty;
 
@@ -56,6 +70,7 @@ namespace STAR.ConsoleApp
                 Rules.FixItalicsEnd
             };
 
+            Console.WriteLine($"Reading file: {filePath}");
             using (var sr = new StreamReader(File.Open(filePath, FileMode.Open), encoding))
             {
                 contents = sr.ReadToEnd();
@@ -64,19 +79,26 @@ namespace STAR.ConsoleApp
             var commands = rules.ApplyTo(contents);
             var fileName = Path.GetFileNameWithoutExtension(filePath);
 
-            using (StreamWriter writer = new($"{fileName}.{MarkDownWriter.extension}"))
+            var documentWriter = CreateDocumentWriter(fileName, format);
+            var outputPath = $"{fileName}.{documentWriter.extension}";
+
+            Console.WriteLine($"Writing to file: {outputPath}");
+            using (StreamWriter wr = new(outputPath))
             {
-                MarkDownWriter markDownWriter = new();
-                commands.WriteTo(markDownWriter, writer);
+                commands.WriteTo(documentWriter, wr);
             }
 
-            using (StreamWriter writer = new($"{fileName}.{WordWriter.extension}"))
-            {
-                WordWriter wordWriter = new(fileName);
-                commands.WriteTo(wordWriter, writer);
-            }
+            Console.WriteLine("Finished conversion");
+            Console.WriteLine();
+        }
 
-            Console.WriteLine("Done!");
+        static IDocumentWriter CreateDocumentWriter(string fileName, string format)
+        {
+            if (format == WordStringFormat)
+                return new WordWriter(fileName);
+            else if (format == MarkdownStringFormat)
+                return new MarkDownWriter();
+            return null;
         }
 
         static void DisplayHelp()
@@ -92,7 +114,8 @@ Arguments:
 Options:
     --help       Displays help
     --version    Displays version
-    --codepage   Changes input codepage (default is ISO-8859-1 Western European)
+    --format     Defines output format (word|markdown). Default is word.
+    --codepage   Changes input codepage. Default is ISO-8859-1 Western European.
 ");
         }
 
