@@ -10,16 +10,19 @@ namespace STAR.ConsoleApp
     {
         const string version = "0.1.0";
 
+        static readonly string ArgHelp = "--help";
         static readonly string ArgFile = "--file";
         static readonly string ArgCodePage = "--codepage";
         static readonly string ArgVersion = "--version";
 
         static string filePath;
-        static int codePage = 28591; //iso-8859-1 Western European
+        static int codePage = 28591; //ISO-8859-1 Western European
         static bool displayVersion;
+        static bool displayHelp;
 
         static void ParseArguments(string[] args)
         {
+            args.Parse(ArgHelp, ref displayHelp);
             args.Parse(ArgFile, ref filePath);
             args.Parse(ArgCodePage, ref codePage);
             args.Parse(ArgVersion, ref displayVersion);
@@ -29,9 +32,14 @@ namespace STAR.ConsoleApp
         {
             ParseArguments(args);
 
-            if (displayVersion)
+            if (displayHelp)
             {
-                Console.WriteLine($"{version}");
+                DisplayHelp();
+                return;
+            }
+            else if (displayVersion)
+            {
+                DisplayVersion();
                 return;
             }
 
@@ -69,6 +77,28 @@ namespace STAR.ConsoleApp
             }
 
             Console.WriteLine("Done!");
+        }
+
+        static void DisplayHelp()
+        {
+            Console.WriteLine(@"This tool can convert STAR files (.lst) to common text file types.
+
+Usage:
+    [<> ...] [options]
+
+Arguments:
+< file list >
+
+Options:
+    --help       Displays help
+    --version    Displays version
+    --codepage   Changes input codepage (default is ISO-8859-1 Western European)
+");
+        }
+
+        static void DisplayVersion()
+        {
+            Console.WriteLine($"{version}");
         }
     }
 }
