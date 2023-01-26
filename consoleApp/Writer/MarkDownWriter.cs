@@ -11,9 +11,7 @@ namespace STAR.Writer
         public static void WriteCommands(IEnumerable<Command> commands, TextWriter writer)
         {
             foreach (Command command in commands)
-            {
                 WriteCommand(writer, command);
-            }
         }
 
         static void WriteCommand(TextWriter writer, in Command command)
