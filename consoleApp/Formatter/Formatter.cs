@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using STAR.Writer;
+using System.Collections.Generic;
 using System.IO;
 
 namespace STAR.Format
@@ -6,7 +7,6 @@ namespace STAR.Format
     public static class Formatter
     {
         public delegate void Rule(CommandContext context);
-        public delegate void Writer(IEnumerable<Command> commands, TextWriter writer);
 
         public static IEnumerable<Command> ApplyTo(this IEnumerable<Rule> rules, string str)
         {
@@ -26,9 +26,9 @@ namespace STAR.Format
             return context.input;
         }
 
-        public static void WriteTo(this IEnumerable<Command> commands, Writer writer, TextWriter textWriter)
+        public static void WriteTo(this IEnumerable<Command> commands, IDocumentWriter writer, TextWriter textWriter)
         {
-            writer.Invoke(commands, textWriter);
+            writer.WriteCommands(commands, textWriter);
         }
     }
 }

@@ -58,10 +58,17 @@ namespace STAR.ConsoleApp
 
             using (StreamWriter writer = new($"{fileName}.{MarkDownWriter.extension}"))
             {
-                commands.WriteTo(MarkDownWriter.WriteCommands, writer);
+                MarkDownWriter markDownWriter = new();
+                commands.WriteTo(markDownWriter, writer);
             }
 
-            commands.WriteTo(MarkDownWriter.WriteCommands, Console.Out);
+            using (StreamWriter writer = new($"{fileName}.{WordWriter.extension}"))
+            {
+                WordWriter wordWriter = new(fileName);
+                commands.WriteTo(wordWriter, writer);
+            }
+
+            Console.WriteLine("Done!");
         }
     }
 }
