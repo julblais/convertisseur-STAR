@@ -11,7 +11,6 @@ namespace STAR.ConsoleApp
         const string version = "0.1.0";
 
         const string ArgHelp = "--help";
-        const string ArgFile = "--file";
         const string ArgCodePage = "--codepage";
         const string ArgVersion = "--version";
         const string ArgOutputFormat = "--format";
@@ -19,7 +18,7 @@ namespace STAR.ConsoleApp
         const string WordStringFormat = "word";
         const string MarkdownStringFormat = "markdown";
 
-        static string filePath;
+        static string[] filePaths;
         static string outputFormat = WordStringFormat;
         static int codePage = 28591; //ISO-8859-1 Western European
         static bool displayVersion;
@@ -29,9 +28,9 @@ namespace STAR.ConsoleApp
         {
             args.Parse(ArgHelp, ref displayHelp);
             args.Parse(ArgVersion, ref displayVersion);
-            args.Parse(ArgFile, ref filePath);
             args.Parse(ArgCodePage, ref codePage);
             args.Parse(ArgOutputFormat, ref outputFormat);
+            filePaths = args.ParseArgsList();
         }
 
         static void Main(string[] args)
@@ -48,8 +47,14 @@ namespace STAR.ConsoleApp
                 DisplayVersion();
                 return;
             }
+            else if (filePaths.Length <= 0)
+            {
+                Console.WriteLine("No files to convert.");
+                return;
+            }
 
-            ConvertFile(filePath, outputFormat);
+            foreach(var filePath in filePaths)
+                ConvertFile(filePath, outputFormat);
 
             Console.WriteLine();
             Console.WriteLine("Done!");
