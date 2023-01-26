@@ -86,12 +86,12 @@ namespace STAR.Writer
                     italicsLevel--;
                     break;
                 case Command.Type.NewSection:
-                    if (italicsLevel != 0) //close italics scope to avoid spilling italics over the next sections
-                        writer.WriteLine(EndItalics);
+                    if (italicsLevel != 0)
+                        while (italicsLevel-- > 0)//close italics scope to avoid spilling italics over the next sections
+                            writer.WriteLine(EndItalics);
                     writer.WriteLine();
                     writer.WriteLine(pageBreak);
                     writer.WriteLine();
-                    italicsLevel = 0;
                     break;
             }
         }
