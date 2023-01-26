@@ -1,4 +1,4 @@
-name: Build console app - dotnet
+name: Build dotnet app
 
 on:
   workflow_call
@@ -19,7 +19,7 @@ jobs:
       run:  New-Item -Path .\output -ItemType Directory -Force
  # publishes .net project to the release folder
     - name: Publish .NET Core Project
-      run:  dotnet publish consoleApp/consoleApp.csproj -c Release --nologo --output output --runtime win-x64 --self-contained true
+      run:  dotnet publish consoleApp/consoleApp.csproj -c Release --nologo --output output --runtime win-x64 --self-contained true -p:PublishSingleFile=True
  # Upload artifacts
     - name: Send Artifacts
       uses: actions/upload-artifact@v3.1.0
