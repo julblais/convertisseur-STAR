@@ -86,9 +86,8 @@ namespace STAR.Writer
                     italicsLevel--;
                     break;
                 case Command.Type.NewSection:
-                    if (italicsLevel != 0)
-                        while (italicsLevel-- > 0)//close italics scope to avoid spilling italics over the next sections
-                            writer.WriteLine(EndItalics);
+                    while (italicsLevel-- > 0)//close italics scope to avoid spilling italics over the next sections
+                        writer.WriteLine(EndItalics);
                     writer.WriteLine();
                     writer.WriteLine(pageBreak);
                     writer.WriteLine();
