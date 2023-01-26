@@ -8,8 +8,8 @@ on:
 
 jobs:
   call-build-dotnet:
-    name: Build dotnet console app
+    name: Build dotnet app
     uses: ./.github/workflows/buildDotNetConsoleApp.yml
   call-build-native:
-    name: Build native console app
+    name: Build native app
     uses: ./.github/workflows/buildNativeConsoleApp.yml
