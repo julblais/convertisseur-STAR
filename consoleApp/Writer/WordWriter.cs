@@ -53,8 +53,10 @@ namespace STAR.Writer
             WriteHeader(m_Title, writer);
             writer.WriteLine();
 
+            int italicsLevel = 0;
+
             foreach (Command command in commands)
-                WriteCommand(writer, command);
+                WriteCommand(writer, command, ref italicsLevel);
 
             writer.Write(footer);
         }
@@ -65,7 +67,7 @@ namespace STAR.Writer
             writer.Write(headerFormatted);
         }
 
-        static void WriteCommand(TextWriter writer, in Command command)
+        static void WriteCommand(TextWriter writer, in Command command, ref int italicsLevel)
         {
             switch (command.type)
             {
@@ -77,11 +79,15 @@ namespace STAR.Writer
                     break;
                 case Command.Type.ItalicsBegin:
                     writer.Write(BeginItalics);
+                    italicsLevel++;
                     break;
                 case Command.Type.ItalicsEnd:
                     writer.Write(EndItalics);
+                    italicsLevel--;
                     break;
                 case Command.Type.NewSection:
+                    while (italicsLevel-- > 0)//close italics scope to avoid spilling italics over the next sections
+                        writer.WriteLine(EndItalics);
                     writer.WriteLine();
                     writer.WriteLine(pageBreak);
                     writer.WriteLine();
