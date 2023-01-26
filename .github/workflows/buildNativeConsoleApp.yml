@@ -20,6 +20,9 @@ jobs:
  # publishes .net project to the release folder
     - name: Publish .NET Core Project
       run:  dotnet publish consoleApp/consoleApp.csproj -c Release --nologo --output output --runtime win-x64 --self-contained true -p:PublishAOT=True
+ # remove .pbd debug file
+    - name: Remove debug info file
+      run: del output\*.pdb
  # Upload artifacts
     - name: Send Artifacts
       uses: actions/upload-artifact@v3.1.0
