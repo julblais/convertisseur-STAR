@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace STAR.ConsoleApp
@@ -37,6 +38,25 @@ namespace STAR.ConsoleApp
                 reference = ConvertTo<bool>(argument, args[index + 1]);
 
             return args;
+        }
+
+        public static string[] ParseArgsList(this string[] args)
+        {
+            var output = new List<string>(args.Length);
+
+            if (args.Length > 0)
+            {
+                foreach (var arg in args)
+                {
+                    var isOption = arg.StartsWith("--", StringComparison.InvariantCultureIgnoreCase);
+
+                    if (!isOption)
+                        output.Add(arg);
+                    else
+                        break;
+                }
+            }
+            return output.ToArray();
         }
 
         static int GetArgIndex(string[] arguments, string argument)

@@ -6,7 +6,7 @@ namespace STAR.Writer
 {
     public class MarkDownWriter : IDocumentWriter
     {
-        public const string extension = "md";
+        public string extension => "md";
 
         public void WriteCommands(IEnumerable<Command> commands, TextWriter writer)
         {

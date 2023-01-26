@@ -6,7 +6,7 @@ namespace STAR.Writer
 {
     public class WordWriter : IDocumentWriter
     {
-        public const string extension = "doc";
+        public string extension => "doc";
 
         const string headerFormat = @"<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40' lang=""fr"">
 <head><title>{0}</title>
