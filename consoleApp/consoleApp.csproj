@@ -6,6 +6,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <StartupObject>STAR.ConsoleApp.Program</StartupObject>
+    <AssemblyName>ConvertisseurSTAR</AssemblyName>
     
     <PublishTrimmed>true</PublishTrimmed>
     <PlatformTarget>x64</PlatformTarget>
