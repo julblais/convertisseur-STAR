@@ -31,12 +31,10 @@ jobs:
           path: native/
       - name: Archive Dotnet Release
         run: Compress-Archive -Path dotnet\*.* -DestinationPath ConvertisseurSTAR-dotnet.zip -CompressionLevel optimal
-      - name: Archive Native Release
-        run: Compress-Archive -Path native\*.* -DestinationPath ConvertisseurSTAR-native.zip -CompressionLevel optimal
       - name: Upload Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
             ConvertisseurSTAR-dotnet.zip
-            ConvertisseurSTAR-native.zip
+            native/ConvertisseurSTAR.exe
           

@@ -10,7 +10,6 @@
     
     <PublishTrimmed>true</PublishTrimmed>
     <PlatformTarget>x64</PlatformTarget>
-    <PublishSingleFile>true</PublishSingleFile>
 
     <ApplicationIcon>resources\favicon.ico</ApplicationIcon>
     <Company>julblais</Company>

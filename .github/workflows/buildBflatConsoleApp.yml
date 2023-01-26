@@ -1,0 +1,46 @@
+name: Build bflat console app
+
+on:
+  workflow_dispatch
+
+jobs:
+  Build-native:
+    runs-on: windows-latest  #https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    steps:
+    # uses GitHub's checkout action to checkout code from the master branch
+    - uses: actions/checkout@v3
+    # download bflat
+    - name: Download bflat
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "bflattened/bflat"
+        tag: "v7.0.1"
+        fileName: "bflat-7.0.1-windows-x64.zip"
+    # Extract bflat
+    - name: Extract bflat
+      run: Expand-Archive -Path bflat-7.0.1-windows-x64.zip -DestinationPath bflat
+    # download rcedit
+    - name: Download rcedit
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "electron/rcedit"
+        tag: "v1.1.1"
+        fileName: "rcedit-x64.exe"
+    # create output dir
+    - name: Create output dir
+      run:  New-Item -Path .\output -ItemType Directory -Force
+    # publish with BFlat AOT
+    - name: Publish AOT Project with BFlat
+      shell: pwsh
+      run: |
+        .\build-bflat.ps1
+    # change icon
+    - name: Change exe icon
+      run: .\rcedit-x64.exe "output/ConvertisseurSTAR.exe" --set-icon "consoleApp\resources\favicon.ico"
+    # Upload artifacts
+    - name: Send Artifacts
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: consoleApp-native
+        path: |
+          ./output/
