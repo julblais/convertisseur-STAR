@@ -8,7 +8,7 @@ namespace STAR.ConsoleApp
 {
     internal class Program
     {
-        const string version = "0.5.2";
+        const string version = "0.5.3";
 
         const string ArgHelp = "--help";
         const string ArgCodePage = "--codepage";
