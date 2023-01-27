@@ -89,7 +89,8 @@ namespace STAR.Writer
                     while (italicsLevel-- > 0)//close italics scope to avoid spilling italics over the next sections
                         writer.WriteLine(EndItalics);
                     writer.WriteLine();
-                    writer.WriteLine(pageBreak);
+                    writer.WriteLine(NewLine);
+                    writer.WriteLine(NewLine);
                     writer.WriteLine();
                     break;
             }
