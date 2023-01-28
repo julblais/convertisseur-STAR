@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using System.Text
+
+@page "/"
+
+<h1>Convertisseur STAR</h1>
+
+<br>
+
+<InputFile OnChange="@OnFileChange" multiple />
+
+<p> @text </p>
+
+@code
+{
+    static int codePage = 28591; //ISO-8859-1 Western European
+    public string text = string.Empty;
+
+    public async Task<string> ReadFile(Stream stream)
+    {
+        var encoding = Encoding.GetEncoding(codePage);
+        using var reader = new StreamReader(stream, encoding);
+        StringBuilder builder = new StringBuilder();
+        
+        var line = await reader.ReadLineAsync();
+        builder.AppendLine(line);
+        while (line != null)
+        {
+            line = await reader.ReadLineAsync();
+            builder.AppendLine(line);
+        }
+        return builder.ToString();
+    }
+
+    public async void OnFileChange(InputFileChangeEventArgs args)
+    {
+        var files = args.GetMultipleFiles();
+        foreach(var file in files)
+        {
+            using var stream = file.OpenReadStream(5000000);
+            text = await ReadFile(stream);
+        }
+        StateHasChanged();
+    }
+}

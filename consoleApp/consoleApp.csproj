@@ -20,4 +20,8 @@
     <Content Include="resources\favicon.ico" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\core\core.csproj" />
+  </ItemGroup>
+
 </Project>
