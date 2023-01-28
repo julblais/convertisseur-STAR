@@ -10,6 +10,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "consoleApp", "consoleApp\co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core", "core\core.csproj", "{028BD28F-8734-4DFC-A12A-8D4EBC4E58C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webApp", "webApp\webApp.csproj", "{05C32CEE-7033-4A4C-8CC3-EDF65C639FBE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{028BD28F-8734-4DFC-A12A-8D4EBC4E58C8} = {028BD28F-8734-4DFC-A12A-8D4EBC4E58C8}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +29,10 @@ Global
 		{028BD28F-8734-4DFC-A12A-8D4EBC4E58C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{028BD28F-8734-4DFC-A12A-8D4EBC4E58C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{028BD28F-8734-4DFC-A12A-8D4EBC4E58C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05C32CEE-7033-4A4C-8CC3-EDF65C639FBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05C32CEE-7033-4A4C-8CC3-EDF65C639FBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05C32CEE-7033-4A4C-8CC3-EDF65C639FBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05C32CEE-7033-4A4C-8CC3-EDF65C639FBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
