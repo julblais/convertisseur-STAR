@@ -71,8 +71,8 @@ namespace STAR.ConsoleApp
                 Rules.FixStartRecord,
                 Rules.AddRecordSections,
                 Rules.FixLongSpaces,
-                //Rules.FixItalicsStart,
-                //Rules.FixItalicsEnd
+                Rules.RemoveItalicsStart,
+                Rules.RemoveItalicsEnd
             };
 
             Console.WriteLine($"Reading file: {filePath}");
