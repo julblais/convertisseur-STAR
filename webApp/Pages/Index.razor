@@ -10,9 +10,11 @@
 
 <br>
 
-<label> Upload up to 10 .lst files:
-    <InputFile class="selectFiles" OnChange="@OnFileChange" multiple />
-</label>
+<div @ref="fileDropContainer" class="file-drop-zone @HoverClass" @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondragover="OnDragEnter">
+    <label> Upload up to 10 .lst files:
+        <InputFile class="selectFiles" OnChange="@OnFileChange" multiple />
+    </label>
+</div>
 
 <br>
 <br>
@@ -27,6 +29,11 @@
 {
     static int codePage = 28591; //ISO-8859-1 Western European
     public string text = string.Empty;
+    ElementReference fileDropContainer;
+
+    private string HoverClass;
+    void OnDragEnter(DragEventArgs e) => HoverClass = "hover";
+    void OnDragLeave(DragEventArgs e) => HoverClass = string.Empty;
 
     public async void OnFileChange(InputFileChangeEventArgs args)
     {

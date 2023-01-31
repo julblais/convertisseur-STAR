@@ -8,3 +8,21 @@
     display: inline-block;
     font-size: 16px;
 }
+
+.file-drop-zone {
+    display: flex;
+    width: 100%;
+    border: 3px dotted #fb275d;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.hover {
+    border-style: solid;
+    background-color: #00ca71;
+}
+
+::deep input[type=file] {
+    width: 100%;
+    padding: 20px;
+}
