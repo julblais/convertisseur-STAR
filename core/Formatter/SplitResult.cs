@@ -15,7 +15,7 @@ namespace STAR.Format
 
         public static SplitResult CreateEmpty()
         {
-            return new SplitResult(new ReadOnlySpan<char>(), new ReadOnlySpan<char>());
+            return new SplitResult(ReadOnlySpan<char>.Empty, ReadOnlySpan<char>.Empty);
         }
 
         public readonly bool IsEmpty()
