@@ -56,12 +56,14 @@ namespace STAR.Format
                     var result = text.SplitInTwo(substring);
                     while (!result.IsEmpty()) //found
                     {
-                        ctx.Add(Command.CreateText(result.first));
+                        if (result.first.Length > 0)
+                            ctx.Add(Command.CreateText(result.first));
                         ctx.Add(toReplace);
                         text = result.last;
                         result = text.SplitInTwo(substring);
                     }
-                    ctx.Add(Command.CreateText(text));
+                    if (text.Length > 0)
+                        ctx.Add(Command.CreateText(text));
                 }
                 else
                     ctx.Add(command);
@@ -82,6 +84,34 @@ namespace STAR.Format
         public static void ReplaceSubString(CommandContext ctx, char substring, Command toReplace)
         {
             ReplaceSubString(ctx, new ReadOnlySpan<char>(substring), toReplace);
+        }
+
+        public static void RemoveSubString(CommandContext ctx, char substring)
+        {
+            RemoveSubString(ctx, new ReadOnlySpan<char>(substring));
+        }
+
+        public static void RemoveSubString(CommandContext ctx, ReadOnlySpan<char> substring)
+        {
+            foreach (var command in ctx.input)
+            {
+                if (command.type == Command.Type.Text)
+                {
+                    var text = command.textAsSpan;
+                    var result = text.SplitInTwo(substring);
+                    while (!result.IsEmpty()) //found
+                    {
+                        if (result.first.Length > 0)
+                            ctx.Add(Command.CreateText(result.first));
+                        text = result.last;
+                        result = text.SplitInTwo(substring);
+                    }
+                    if (text.Length > 0)
+                        ctx.Add(Command.CreateText(text));
+                }
+                else
+                    ctx.Add(command);
+            }
         }
     }
 }
