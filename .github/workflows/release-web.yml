@@ -1,0 +1,45 @@
+name: Release-web
+
+on: 
+  push:
+    tags:
+    - 'v[0-9]+.[0-9]+.[0-9]+-web'
+
+jobs:
+  Invoke-Build-webapp:
+    name: Build web app
+    uses: ./.github/workflows/buildWebApp.yml
+  Create-Release:
+    name: Release web app
+    runs-on: windows-latest
+    needs: Invoke-Build-webapp
+    permissions:
+      contents: write
+    steps:
+      - name: Download webapp build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: webApp
+          path: webApp/
+      - name: Change base-tag in index.html from / to convertisseur-STAR
+        run: sed -i 's/<base href="\/" \/>/<base href="\/convertisseur-STAR\/" \/>/g' webApp/wwwroot/index.html
+      # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project.
+      - name: Add .nojekyll file
+        run: touch webApp/wwwroot/.nojekyll
+      # copy index.html to 404.html to serve the same file when a file is not found
+      - name: copy index.html to 404.html
+        run: cp webApp/wwwroot/index.html webApp/wwwroot/404.html
+      - name: Commit wwwroot to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: webApp/wwwroot
+      - name: Archive Release
+        run: Compress-Archive -Path webApp\*.* -DestinationPath ConvertisseurSTAR-webApp.zip -CompressionLevel optimal
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ConvertisseurSTAR-webApp.zip
+          
