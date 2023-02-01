@@ -57,6 +57,11 @@ namespace STAR.Format
             return new Command(Type.Text, text.AsMemory());
         }
 
+        public static Command CreateEmptyText()
+        {
+            return new Command(Type.Text, ReadOnlyMemory<char>.Empty);
+        }
+
         public static Command CreateNewLine()
         {
             return new Command(Type.Newline);

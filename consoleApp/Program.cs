@@ -8,7 +8,7 @@ namespace STAR.ConsoleApp
 {
     internal class Program
     {
-        const string version = "0.5.3";
+        const string version = "0.5.4";
 
         const string ArgHelp = "--help";
         const string ArgCodePage = "--codepage";
@@ -71,8 +71,8 @@ namespace STAR.ConsoleApp
                 Rules.FixStartRecord,
                 Rules.AddRecordSections,
                 Rules.FixLongSpaces,
-                //Rules.FixItalicsStart,
-                //Rules.FixItalicsEnd
+                Rules.RemoveItalicsStart,
+                Rules.RemoveItalicsEnd
             };
 
             Console.WriteLine($"Reading file: {filePath}");

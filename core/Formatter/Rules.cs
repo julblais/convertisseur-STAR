@@ -52,6 +52,16 @@ namespace STAR.Format
             RulesHelpers.ReplaceSubString(context, italicsEnd, command);
         }
 
+        public static void RemoveItalicsStart(CommandContext context)
+        {
+            RulesHelpers.RemoveSubString(context, italicStart);
+        }
+
+        public static void RemoveItalicsEnd(CommandContext context)
+        {
+            RulesHelpers.RemoveSubString(context, italicsEnd);
+        }
+
         public static void FixStartRecord(CommandContext context)
         {
             foreach (var command in context.input)
