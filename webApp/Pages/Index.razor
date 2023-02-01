@@ -11,7 +11,7 @@
 <br>
 
 <div @ref="fileDropContainer" class="file-drop-zone @HoverClass" @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondragover="OnDragEnter">
-    <label> Upload up to 10 .lst files:
+    <label> Choisir jusqu'à 10 fichiers .lst:
         <InputFile class="selectFiles" OnChange="@OnFileChange" multiple />
     </label>
 </div>
@@ -19,7 +19,7 @@
 <br>
 <br>
 
-<button @onclick="DownloadFileFromStream">Download File</button>
+<button @onclick="DownloadFileFromStream">Convertir en fichier .doc</button>
 
 <br>
 

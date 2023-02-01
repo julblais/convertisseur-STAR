@@ -22,7 +22,10 @@
     background-color: #00ca71;
 }
 
-::deep input[type=file] {
-    width: 100%;
-    padding: 20px;
+input::file-selector-button {
+    font-weight: bold;
+    color: purple;
+    padding: 0.5em;
+    border: 2px solid grey;
+    border-radius: 3px;
 }
