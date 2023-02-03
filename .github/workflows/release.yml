@@ -3,7 +3,10 @@ name: Release
 on: 
   push:
     tags:
-    - 'v[0-9]+.[0-9]+.[0-9]+'
+    - 'v[0-9]+.[0-9]+.[0-9]+$'
+
+permissions:
+  contents: write
 
 jobs:
   Invoke-Build-dotnet:
@@ -12,6 +15,9 @@ jobs:
   Invoke-Build-native:
     name: Build native console app
     uses: ./.github/workflows/buildNativeConsoleApp.yml
+  Invoke-Build-webapp:
+    name: Build web app
+    uses: ./.github/workflows/buildWebApp.yml
   Create-Release:
     name: Release console app
     runs-on: windows-latest
@@ -37,4 +43,23 @@ jobs:
           files: |
             ConvertisseurSTAR-dotnet.zip
             native/ConvertisseurSTAR.exe
-          
+  Upload webapp:
+    name: Release web app
+    runs-on: ubuntu-latest
+    needs: Invoke-Build-webapp
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Echo tag name
+        run: echo "Tag name - ${{github.ref_name}}"
+      - name: Download webapp build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: webApp
+          path: release/
+      - name: Commit wwwroot to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          branch: gh-pages
+          folder: release/wwwroot
+          tag: "${{github.ref_name}}-web"
