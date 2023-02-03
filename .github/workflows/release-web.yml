@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Echo tag name
-        run: echo "Tag name: ${{  github.ref_name }}"
+        run: echo "Tag name - ${{github.ref_name}}"
       - name: Download webapp build artifacts
         uses: actions/download-artifact@v3
         with:
