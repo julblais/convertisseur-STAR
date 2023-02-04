@@ -43,7 +43,7 @@ jobs:
           files: |
             ConvertisseurSTAR-dotnet.zip
             native/ConvertisseurSTAR.exe
-  Upload webapp:
+  Upload-webapp:
     name: Release web app
     runs-on: ubuntu-latest
     needs: Invoke-Build-webapp
