@@ -1,10 +1,10 @@
 name: Build web app
 
 on:
-  workflow_dispatch
+  workflow_call
 
 jobs:
-  Build-native:
+  Build-web-app:
     runs-on: windows-latest  #https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
     steps:
     # uses GitHub's checkout action to checkout code from the master branch
@@ -16,7 +16,7 @@ jobs:
         dotnet-version: 7.x
     # publishes Blazor project to the release folder
     - name: Publish .NET Core Project
-      run: dotnet publish webApp/webApp.csproj -c Release -o release --nologo -p:RunAOTCompilation=True
+      run: dotnet publish webApp/webApp.csproj -c Release -o release -p:GHPages=true --nologo
     # Upload artifacts
     - name: Send Artifacts
       uses: actions/upload-artifact@v3.1.0

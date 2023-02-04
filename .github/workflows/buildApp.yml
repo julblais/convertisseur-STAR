@@ -1,4 +1,4 @@
-name: Build console app
+name: Build app
 
 on:
   push:
@@ -10,6 +10,6 @@ jobs:
   call-build-dotnet:
     name: Build dotnet app
     uses: ./.github/workflows/buildDotNetConsoleApp.yml
-  call-build-native:
-    name: Build native app
-    uses: ./.github/workflows/buildNativeConsoleApp.yml
+  call-build-web-app:
+    name: Build web app
+    uses: ./.github/workflows/buildWebApp.yml

@@ -1,5 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 @using System.Text
+@using STAR.Format
+@using STAR.Writer
+@inject IJSRuntime JS
 
 @page "/"
 
@@ -7,16 +10,75 @@
 
 <br>
 
-<InputFile OnChange="@OnFileChange" multiple />
+<div @ref="fileDropContainer" class="file-drop-zone @HoverClass" @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondragover="OnDragEnter">
+    <label> Choisir jusqu'à 10 fichiers .lst:
+        <InputFile class="selectFiles" OnChange="@OnFileChange" multiple />
+    </label>
+</div>
 
-<p> @text </p>
+<br>
+<br>
+
+<button @onclick="DownloadFileFromStream">Convertir en fichier .doc</button>
+
+<br>
 
 @code
 {
     static int codePage = 28591; //ISO-8859-1 Western European
     public string text = string.Empty;
+    ElementReference fileDropContainer;
 
-    public async Task<string> ReadFile(Stream stream)
+    private string HoverClass;
+    void OnDragEnter(DragEventArgs e) => HoverClass = "hover";
+    void OnDragLeave(DragEventArgs e) => HoverClass = string.Empty;
+
+    public async void OnFileChange(InputFileChangeEventArgs args)
+    {
+        var files = args.GetMultipleFiles(10);
+        foreach(var file in files)
+        {
+            using var stream = file.OpenReadStream(5000000);
+            var commands = await GetCommands(stream);
+            text = WriteCommands(commands);
+        }
+        StateHasChanged();
+    }
+
+    async Task DownloadFileFromStream()
+    {        
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(text));
+        using var streamRef = new DotNetStreamReference(stream);
+
+        await JS.InvokeVoidAsync("downloadFileFromStream", "test.doc", streamRef);
+    }
+
+    async Task<IEnumerable<Command>> GetCommands(Stream stream)
+    {
+        var contents = await ReadFile(stream);
+
+        var rules = new Formatter.Rule[]
+        {
+            Rules.FixEndline,
+            Rules.FixStartRecord,
+            Rules.AddRecordSections,
+            Rules.FixLongSpaces,
+            Rules.RemoveItalicsStart,
+            Rules.RemoveItalicsEnd
+        };
+        
+        return rules.ApplyTo(contents);
+    }
+
+    string WriteCommands(IEnumerable<Command> commands)
+    {
+        using var writer = new StringWriter();
+        var documentWriter = new WordWriter("test");
+        commands.WriteTo(documentWriter, writer);
+        return writer.ToString();
+    }
+
+    async Task<string> ReadFile(Stream stream)
     {
         var encoding = Encoding.GetEncoding(codePage);
         using var reader = new StreamReader(stream, encoding);
@@ -30,16 +92,5 @@
             builder.AppendLine(line);
         }
         return builder.ToString();
-    }
-
-    public async void OnFileChange(InputFileChangeEventArgs args)
-    {
-        var files = args.GetMultipleFiles();
-        foreach(var file in files)
-        {
-            using var stream = file.OpenReadStream(5000000);
-            text = await ReadFile(stream);
-        }
-        StateHasChanged();
     }
 }
