@@ -57,9 +57,12 @@ jobs:
         with:
           name: webApp
           path: release/
+      # changes the base-tag in index.html from '/' to match GitHub Pages repository subdirectory
+      - name: Change base-tag in index.html
+        run: sed -i 's/<base href="\/" \/>/<base href="\/convertisseur-star\/" \/>/g' release/wwwroot/index.html
       - name: Commit wwwroot to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: gh-pages
           folder: release/wwwroot
-          tag: "${{github.ref_name}}-web"
+          tag: "web/${{github.ref_name}}"
