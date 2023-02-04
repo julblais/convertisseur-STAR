@@ -1,0 +1,31 @@
+.selectFiles {
+    background-color: mediumpurple;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.file-drop-zone {
+    display: flex;
+    width: 100%;
+    border: 3px dotted #fb275d;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.hover {
+    border-style: solid;
+    background-color: #00ca71;
+}
+
+input::file-selector-button {
+    font-weight: bold;
+    color: purple;
+    padding: 0.5em;
+    border: 2px solid grey;
+    border-radius: 3px;
+}
