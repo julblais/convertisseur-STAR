@@ -1,3 +1,37 @@
+:root {
+    background: plum;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.app {
+    max-width: 900px;
+    margin: auto;
+}
+
+.titleBox {
+    margin: auto;
+}
+
+.title {
+    font-size: 300%;
+    color: purple;
+}
+
+.star {
+    animation: rotate 10s ease-in-out infinite;
+    padding: 15px;
+}
+
+.star_img {
+    width:60px;
+}
+
+  @keyframes rotate{
+    from{ transform: rotate(-20deg); }
+    50% { transform: rotate(20deg); }
+    to{ transform: rotate(-20deg); }
+  }
+
 .selectFiles {
     background-color: mediumpurple;
     border: none;
@@ -24,8 +58,9 @@
 
 input::file-selector-button {
     font-weight: bold;
-    color: purple;
+    color: gold;
     padding: 0.5em;
-    border: 2px solid grey;
+    border: 5px solid green;
     border-radius: 3px;
+    background-color: purple;
 }

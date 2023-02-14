@@ -6,9 +6,18 @@
 
 @page "/"
 
-<h1>Convertisseur STAR</h1>
+<table class="titleBox"><tr>
+  <th class="title">Convertisseur STAR</th>
+  <th class="star"><img class="star_img" src="imgs/star.svg" alt="Étoile"/></th>
+</tr></table>
+
+<div>Déposez votre fichier ici</div>
 
 <br>
+<br>
+
+<br>
+
 
 <div @ref="fileDropContainer" class="file-drop-zone @HoverClass" @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondragover="OnDragEnter">
     <label> Choisir jusqu'à 10 fichiers .lst:
