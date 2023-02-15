@@ -2,7 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="400px" height="400px" viewBox="0 0 400 400" enable-background="new 0 0 400 400" xml:space="preserve">
-<polygon fill="#F6AB32" stroke="#000000" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-	200.034,18.484 258.67,137.294 389.785,156.349 294.911,248.83 317.307,379.412 200.034,317.762 82.762,379.412 105.157,248.83 
-	10.283,156.349 141.398,137.294 "/>
+<polygon fill="#4B0082" stroke="#EACCFF" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+	199.772,20.885 258.018,138.904 388.262,157.833 294.019,249.698 316.265,379.412 199.772,318.172 83.28,379.412 105.526,249.698 
+	11.283,157.833 141.526,138.904 "/>
 </svg>

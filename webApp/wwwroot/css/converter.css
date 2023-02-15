@@ -1,5 +1,5 @@
 :root {
-    background: plum;
+    background: indigo;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
@@ -14,7 +14,7 @@
 
 .title {
     font-size: 300%;
-    color: purple;
+    color: rgb(234, 204, 255);
 }
 
 .star {
