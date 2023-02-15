@@ -7,13 +7,12 @@
 @page "/"
 
 <div class="mainContainer">
+    <div class="message">Importez un fichier STAR (.lst)</div>
     <div @ref="fileDropContainer" class="file-drop-zone @HoverClass" @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondragover="OnDragEnter">
         <InputFile class="selectFilesInput" OnChange="@OnFileChange" accept=".lst,.svg" multiple />
     </div>
-    <div class="fileResult">
-        <p>Votre fichier est @name</p>
-    </div>
-    <div class="convert">
+    <div class="message">Votre fichier est @name</div>
+    <div class="convert disabled">
         <button class="convertButton" @onclick="DownloadFileFromStream">Convertir en format Word (.doc)</button>
     </div>
 </div>

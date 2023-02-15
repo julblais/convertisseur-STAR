@@ -15,7 +15,7 @@
 }
 
 .app {
-    padding: 15px;
+    padding: 5px;
 }
 
 .titleBox {
@@ -47,6 +47,13 @@
     margin: auto;
 }
 
+.message {
+    font-size: larger;
+    color: var(--primary-color);
+    text-align: center;
+    padding: 10px;
+}
+
 .file-drop-zone {
     width: 100%;
 }
@@ -56,7 +63,8 @@
     width: 100%;
 }
 
-.file-drop-zone input::file-selector-button {
+.file-drop-zone input::file-selector-button,
+.convertButton {
     font-weight: bold;
     font-size: x-large;
     color: var(--secondary-color);
@@ -68,7 +76,8 @@
     font-family: var(--font);
 }
 
-.file-drop-zone input::file-selector-button:hover {
+.file-drop-zone input::file-selector-button:hover,
+.convertButton:hover {
     cursor: pointer;    
     background-color: var(--secondary-color);
     color: var(--primary-color);
@@ -86,25 +95,6 @@
     text-align: center;
 }
 
-.convert {
-    width: 100%;
-}
-
-.convertButton {
-    font-weight: bold;
-    font-size: x-large;
-    color: var(--secondary-color);
-    padding: 10px;
-    width: 100%;
-    border-radius: 3px;
-    background-color: var(--primary-color);
-    border: 10px solid var(--primary-color);
+.disabled {
     opacity: 0.5;
-    font-family: var(--font);
-}
-
-.convertButton:hover {
-    cursor: pointer;    
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
 }
