@@ -47,7 +47,7 @@
         var files = args.GetMultipleFiles(10);
         foreach(var file in files)
         {
-            name = file.Name;
+            name = $"{file.Name} ({file.Size/1000}kB)";
             using var stream = file.OpenReadStream(5000000);
             var commands = await GetCommands(stream);
             text = WriteCommands(commands);
