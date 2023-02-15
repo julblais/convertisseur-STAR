@@ -3,9 +3,14 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.app {
-    max-width: 900px;
+.waiting {
+    color:#f4e6ff;
+    font-size: 200%;
     margin: auto;
+    text-align: center;
+}
+
+.app {
     padding: 15px;
 }
 

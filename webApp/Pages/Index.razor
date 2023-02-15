@@ -6,13 +6,6 @@
 
 @page "/"
 
-<table class="titleBox"><tr>
-  <th class="title">Convertisseur STAR</th>
-  <th class="star"><img class="star_img" src="imgs/star.svg" alt="Étoile"/></th>
-</tr></table>
-
-<br>
-
 <div class="mainContainer">
     <div @ref="fileDropContainer" class="file-drop-zone @HoverClass" @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondragover="OnDragEnter">
         <InputFile class="selectFilesInput" OnChange="@OnFileChange" accept=".lst,.svg" multiple />
@@ -24,12 +17,6 @@
         <button class="convertButton" @onclick="DownloadFileFromStream">Convertir en format Word (.doc)</button>
     </div>
 </div>
-
-<br>
-<br>
-
-
-<br>
 
 @code
 {
