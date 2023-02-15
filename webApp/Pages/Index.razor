@@ -12,16 +12,22 @@
 </tr></table>
 
 <br>
-<br>
 
-<div @ref="fileDropContainer" class="file-drop-zone @HoverClass" @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondragover="OnDragEnter">
-    <InputFile class="selectFilesInput" OnChange="@OnFileChange" accept=".lst,.svg" multiple />
+<div class="mainContainer">
+    <div @ref="fileDropContainer" class="file-drop-zone @HoverClass" @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondragover="OnDragEnter">
+        <InputFile class="selectFilesInput" OnChange="@OnFileChange" accept=".lst,.svg" multiple />
+    </div>
+    <div class="fileResult">
+        <p>Votre fichier est @name</p>
+    </div>
+    <div class="convert">
+        <button class="convertButton" @onclick="DownloadFileFromStream">Convertir en format Word (.doc)</button>
+    </div>
 </div>
 
 <br>
 <br>
 
-<button @onclick="DownloadFileFromStream">Convertir en fichier .doc</button>
 
 <br>
 
@@ -29,6 +35,7 @@
 {
     static int codePage = 28591; //ISO-8859-1 Western European
     public string text = string.Empty;
+    public string name = string.Empty;
     ElementReference fileDropContainer;
 
     private string HoverClass;
@@ -40,6 +47,7 @@
         var files = args.GetMultipleFiles(10);
         foreach(var file in files)
         {
+            name = file.Name;
             using var stream = file.OpenReadStream(5000000);
             var commands = await GetCommands(stream);
             text = WriteCommands(commands);

@@ -33,6 +33,11 @@
     width:60px;
 }
 
+.mainContainer {
+    max-width: 400px;
+    margin: auto;
+}
+
 .file-drop-zone {
     width: 100%;
 }
@@ -45,14 +50,50 @@
 .file-drop-zone input::file-selector-button {
     font-weight: bold;
     font-size: x-large;
-    color: gold;
+    color: indigo;
     padding: 10px;
     width: 100%;
-    border: 5px solid green;
     border-radius: 3px;
-    background-color: purple;
+    background-color: #f4e6ff;
+    border: 10px solid #f4e6ff;
+}
+
+.file-drop-zone input::file-selector-button:hover {
+    cursor: pointer;    
+    background-color: indigo;
+    color: #f4e6ff;
 }
 
 .file-drop-zone.hover input::file-selector-button {
-    background-color: bisque;
+    background-color: indigo;
+    color: #f4e6ff;
+}
+
+.fileResult {
+    font-size: large;
+    width: 100%;
+    color: #f4e6ff;
+    text-align: center;
+}
+
+.convert {
+    width: 100%;
+}
+
+.convertButton {
+    font-weight: bold;
+    font-size: x-large;
+    color: indigo;
+    padding: 10px;
+    width: 100%;
+    border-radius: 3px;
+    background-color: #f4e6ff;
+    border: 10px solid #f4e6ff;
+    opacity: 0.5;
+}
+
+.convertButton:hover {
+    cursor: pointer;    
+    background-color: indigo;
+    color: #f4e6ff;
 }
