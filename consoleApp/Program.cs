@@ -8,8 +8,6 @@ namespace STAR.ConsoleApp
 {
     internal class Program
     {
-        const string version = "0.7.0";
-
         const string ArgHelp = "--help";
         const string ArgCodePage = "--codepage";
         const string ArgVersion = "--version";
@@ -126,7 +124,7 @@ Options:
 
         static void DisplayVersion()
         {
-            Console.WriteLine($"{version}");
+            Console.WriteLine($"{Version.AsString}");
         }
     }
 }

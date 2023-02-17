@@ -20,26 +20,27 @@
 
 <div class="about">
     <p><b>La conversion s'effectue localement; aucun fichier n'est transmis hors de cet appareil.</b></p>
-    <p>Consultez le code qui génère cette page ici: <a href="https://github.com/julblais/convertisseur-star">GitHub</a></p>
-    <p class="version">version 0.7.0</p>
+    <p>Consultez le code qui génère cette page: <a href="https://github.com/julblais/convertisseur-star">GitHub</a></p>
+    <p class="version">version @versionWebApp (core @versionCore)</p>
 </div>
 
 @code
 {
-    public string message = k_NoFileSelected;
-    public string HoverClass;
-    public string DisabledClass = k_DisabledClass;
-    public bool conversionDisabled = true;
+    public static string versionWebApp = webApp.Version.AsString;
+    public static string versionCore = STAR.Version.AsString;
 
     const string k_HoverClass = "hover";
     const string k_DisabledClass = "disabled";
     const string k_NoFileSelected = "Aucun fichier sélectionné";
     const string k_FileSelectedFormat = "Fichier sélectionné: {0} ({1}kB)";
     const string k_FileTooLargeFormat = "Erreur: {0} ({1}KB) dépasse la taille maximale (500KB).";
-
     const string k_OutputExtension = ".doc";
     const long k_MaxFileSizeBytes = 500000;
-    const int codePage = 28591; //ISO-8859-1 Western European
+
+    public string message = k_NoFileSelected;
+    public string HoverClass;
+    public string DisabledClass = k_DisabledClass;
+    public bool conversionDisabled = true;
 
     IBrowserFile selectedFile;
     ElementReference fileDropContainer;
@@ -94,58 +95,9 @@
 
     async Task ConvertAndDownloadFile()
     {
-        if (selectedFile == null)
-            await Task.CompletedTask;
-
-        using var inputStream = selectedFile.OpenReadStream(k_MaxFileSizeBytes);
-        var commands = await GetCommands(inputStream);
-        var outputText = WriteCommands(commands, selectedFile.Name);
-
-        using var outputStream = new MemoryStream(Encoding.UTF8.GetBytes(outputText));
-        using var outputStreamRef = new DotNetStreamReference(outputStream);
+        var text = await Converter.Convert(selectedFile, k_MaxFileSizeBytes);
         
-        var outputFilename =  System.IO.Path.ChangeExtension(selectedFile.Name, k_OutputExtension);
-        await JS.InvokeVoidAsync("downloadFileFromStream", outputFilename, outputStreamRef);
-    }
-
-    async Task<IEnumerable<Command>> GetCommands(Stream stream)
-    {
-        var contents = await ReadFile(stream);
-
-        var rules = new Formatter.Rule[]
-        {
-            Rules.FixEndline,
-            Rules.FixStartRecord,
-            Rules.AddRecordSections,
-            Rules.FixLongSpaces,
-            Rules.RemoveItalicsStart,
-            Rules.RemoveItalicsEnd
-        };
-        
-        return rules.ApplyTo(contents);
-    }
-
-    string WriteCommands(IEnumerable<Command> commands, string fileName)
-    {
-        using var writer = new StringWriter();
-        var documentWriter = new WordWriter(fileName);
-        commands.WriteTo(documentWriter, writer);
-        return writer.ToString();
-    }
-
-    async Task<string> ReadFile(Stream stream)
-    {
-        var encoding = Encoding.GetEncoding(codePage);
-        using var reader = new StreamReader(stream, encoding);
-        StringBuilder builder = new StringBuilder();
-        
-        var line = await reader.ReadLineAsync();
-        builder.AppendLine(line);
-        while (line != null)
-        {
-            line = await reader.ReadLineAsync();
-            builder.AppendLine(line);
-        }
-        return builder.ToString();
+        var outputFilename = Path.ChangeExtension(selectedFile.Name, k_OutputExtension);
+        await Converter.CreateFileAndDownload(text, outputFilename, JS);
     }
 }
