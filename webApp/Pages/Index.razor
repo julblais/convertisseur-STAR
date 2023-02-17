@@ -9,44 +9,103 @@
 <div class="mainContainer">
     <div class="message">Importez un fichier STAR (.lst)</div>
     <div @ref="fileDropContainer" class="file-drop-zone @HoverClass" @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondragover="OnDragEnter">
-        <InputFile class="selectFilesInput" OnChange="@OnFileChange" accept=".lst,.svg" multiple />
+        <InputFile class="selectFilesInput" OnChange="@OnFileChange" accept=".lst" />
     </div>
-    <div class="message">Votre fichier est @name</div>
-    <div class="convert disabled">
-        <button class="convertButton" @onclick="DownloadFileFromStream">Convertir en format Word (.doc)</button>
+    <div class="spacer"></div>
+    <div class="message">@message</div>
+    <div class="convert ">
+        <button type="button" class="convertButton @DisabledClass" @onclick="ConvertAndDownloadFile" disabled="@conversionDisabled">Convertir en format Word</button>
     </div>
+</div>
+
+<div class="about">
+    <p><b>La conversion s'effectue localement; aucun fichier n'est transmis hors de cet appareil.</b></p>
+    <p>Consultez le code qui génère cette page ici: <a href="https://github.com/julblais/convertisseur-star">GitHub</a></p>
+    <p class="version">version 0.6.0</p>
 </div>
 
 @code
 {
-    static int codePage = 28591; //ISO-8859-1 Western European
-    public string text = string.Empty;
-    public string name = string.Empty;
+    public string message = k_NoFileSelected;
+    public string HoverClass;
+    public string DisabledClass = k_DisabledClass;
+    public bool conversionDisabled = true;
+
+    const string k_HoverClass = "hover";
+    const string k_DisabledClass = "disabled";
+    const string k_NoFileSelected = "Aucun fichier sélectionné";
+    const string k_FileSelectedFormat = "Fichier sélectionné: {0} ({1}kB)";
+    const string k_FileTooLargeFormat = "Erreur: {0} ({1}KB) dépasse la taille maximale (500KB).";
+
+    const string k_OutputExtension = ".doc";
+    const long k_MaxFileSizeBytes = 500000;
+    const int codePage = 28591; //ISO-8859-1 Western European
+
+    IBrowserFile selectedFile;
     ElementReference fileDropContainer;
 
-    private string HoverClass;
-    void OnDragEnter(DragEventArgs e) => HoverClass = "hover";
-    void OnDragLeave(DragEventArgs e) => HoverClass = string.Empty;
-
-    public async void OnFileChange(InputFileChangeEventArgs args)
+    void OnDragEnter(DragEventArgs e)
     {
-        var files = args.GetMultipleFiles(10);
-        foreach(var file in files)
-        {
-            name = $"{file.Name} ({file.Size/1000}kB)";
-            using var stream = file.OpenReadStream(5000000);
-            var commands = await GetCommands(stream);
-            text = WriteCommands(commands);
-        }
+        HoverClass = k_HoverClass;  
         StateHasChanged();
     }
 
-    async Task DownloadFileFromStream()
-    {        
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(text));
-        using var streamRef = new DotNetStreamReference(stream);
+    void OnDragLeave(DragEventArgs e)
+    { 
+        HoverClass = string.Empty;  
+        StateHasChanged();
+    }
 
-        await JS.InvokeVoidAsync("downloadFileFromStream", "test.doc", streamRef);
+    void EnableConversionButton()
+    {
+        conversionDisabled = false;
+        DisabledClass = string.Empty;
+    }
+
+    void DisableConversionButton()
+    {
+        conversionDisabled = true;
+        DisabledClass = k_DisabledClass;
+    }
+
+    public void OnFileChange(InputFileChangeEventArgs args)
+    {
+        HoverClass = string.Empty;  
+        var file = args.File;
+        if (file == null)
+        {
+            DisableConversionButton();
+            return;
+        }
+
+        var fileSizeKB = file.Size / 1024L;
+        if (file.Size >= k_MaxFileSizeBytes)
+        {
+            message = string.Format(k_FileTooLargeFormat, file.Name, fileSizeKB);
+            DisableConversionButton();
+            return;
+        }
+        
+        message = string.Format(k_FileSelectedFormat, file.Name, fileSizeKB);
+        selectedFile = file; 
+        EnableConversionButton();
+        StateHasChanged();
+    }
+
+    async Task ConvertAndDownloadFile()
+    {
+        if (selectedFile == null)
+            await Task.CompletedTask;
+
+        using var inputStream = selectedFile.OpenReadStream(k_MaxFileSizeBytes);
+        var commands = await GetCommands(inputStream);
+        var outputText = WriteCommands(commands, selectedFile.Name);
+
+        using var outputStream = new MemoryStream(Encoding.UTF8.GetBytes(outputText));
+        using var outputStreamRef = new DotNetStreamReference(outputStream);
+        
+        var outputFilename =  System.IO.Path.ChangeExtension(selectedFile.Name, k_OutputExtension);
+        await JS.InvokeVoidAsync("downloadFileFromStream", outputFilename, outputStreamRef);
     }
 
     async Task<IEnumerable<Command>> GetCommands(Stream stream)
@@ -66,10 +125,10 @@
         return rules.ApplyTo(contents);
     }
 
-    string WriteCommands(IEnumerable<Command> commands)
+    string WriteCommands(IEnumerable<Command> commands, string fileName)
     {
         using var writer = new StringWriter();
-        var documentWriter = new WordWriter("test");
+        var documentWriter = new WordWriter(fileName);
         commands.WriteTo(documentWriter, writer);
         return writer.ToString();
     }

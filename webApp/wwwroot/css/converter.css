@@ -96,5 +96,32 @@
 }
 
 .disabled {
+    cursor: none;
     opacity: 0.5;
+    pointer-events: none;
+}
+
+.spacer {
+    height: 20px;
+}
+
+.about {
+    
+    font-size: large;
+    padding-top: 60px;
+    margin: auto;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+a:link {
+    color: var(--primary-color);
+}
+
+a:visited {
+    color: #e3c4fd;
+}
+
+.version {
+    font-size: small;
 }
