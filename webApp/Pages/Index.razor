@@ -48,7 +48,8 @@
             return;
         }
         
-        message = string.Format(k_FileSelectedFormat, file.Name, fileSizeKB);        
+        message = string.Format(k_FileSelectedFormat, file.Name, fileSizeKB);
+        selectedFile = file;        
         StateHasChanged();
     }
 
