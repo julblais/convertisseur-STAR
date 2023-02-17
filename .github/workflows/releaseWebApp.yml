@@ -34,4 +34,3 @@ jobs:
         with:
           branch: gh-pages
           folder: release/wwwroot
-          tag: "web/${{github.ref_name}}"
