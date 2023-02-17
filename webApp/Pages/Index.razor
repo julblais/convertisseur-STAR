@@ -6,27 +6,22 @@
 
 @page "/"
 
-<h1>Convertisseur STAR</h1>
-
-<br>
-
-<div @ref="fileDropContainer" class="file-drop-zone @HoverClass" @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondragover="OnDragEnter">
-    <label> Choisir jusqu'à 10 fichiers .lst:
-        <InputFile class="selectFiles" OnChange="@OnFileChange" multiple />
-    </label>
+<div class="mainContainer">
+    <div class="message">Importez un fichier STAR (.lst)</div>
+    <div @ref="fileDropContainer" class="file-drop-zone @HoverClass" @ondragenter="OnDragEnter" @ondragleave="OnDragLeave" @ondragover="OnDragEnter">
+        <InputFile class="selectFilesInput" OnChange="@OnFileChange" accept=".lst,.svg" multiple />
+    </div>
+    <div class="message">Votre fichier est @name</div>
+    <div class="convert disabled">
+        <button class="convertButton" @onclick="DownloadFileFromStream">Convertir en format Word (.doc)</button>
+    </div>
 </div>
-
-<br>
-<br>
-
-<button @onclick="DownloadFileFromStream">Convertir en fichier .doc</button>
-
-<br>
 
 @code
 {
     static int codePage = 28591; //ISO-8859-1 Western European
     public string text = string.Empty;
+    public string name = string.Empty;
     ElementReference fileDropContainer;
 
     private string HoverClass;
@@ -38,6 +33,7 @@
         var files = args.GetMultipleFiles(10);
         foreach(var file in files)
         {
+            name = $"{file.Name} ({file.Size/1000}kB)";
             using var stream = file.OpenReadStream(5000000);
             var commands = await GetCommands(stream);
             text = WriteCommands(commands);
