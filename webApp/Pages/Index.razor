@@ -21,24 +21,26 @@
 <div class="about">
     <p><b>La conversion s'effectue localement; aucun fichier n'est transmis hors de cet appareil.</b></p>
     <p>Consultez le code qui génère cette page: <a href="https://github.com/julblais/convertisseur-star">GitHub</a></p>
-    <p class="version">version 0.7.0</p>
+    <p class="version">version @versionWebApp (core @versionCore)</p>
 </div>
 
 @code
 {
-    public string message = k_NoFileSelected;
-    public string HoverClass;
-    public string DisabledClass = k_DisabledClass;
-    public bool conversionDisabled = true;
+    public static string versionWebApp = webApp.Version.AsString;
+    public static string versionCore = STAR.Version.AsString;
 
     const string k_HoverClass = "hover";
     const string k_DisabledClass = "disabled";
     const string k_NoFileSelected = "Aucun fichier sélectionné";
     const string k_FileSelectedFormat = "Fichier sélectionné: {0} ({1}kB)";
     const string k_FileTooLargeFormat = "Erreur: {0} ({1}KB) dépasse la taille maximale (500KB).";
-
     const string k_OutputExtension = ".doc";
     const long k_MaxFileSizeBytes = 500000;
+
+    public string message = k_NoFileSelected;
+    public string HoverClass;
+    public string DisabledClass = k_DisabledClass;
+    public bool conversionDisabled = true;
 
     IBrowserFile selectedFile;
     ElementReference fileDropContainer;
