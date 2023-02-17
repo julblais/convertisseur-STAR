@@ -98,3 +98,7 @@
 .disabled {
     opacity: 0.5;
 }
+
+.spacer {
+    height: 20px;
+}
