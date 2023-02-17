@@ -13,15 +13,20 @@
     </div>
     <div class="spacer"></div>
     <div class="message">@message</div>
-    <div class="convert disabled">
-        <button class="convertButton" @onclick="ConvertAndDownloadFile">Convertir en format Word (.doc)</button>
+    <div class="convert ">
+        <button type="button" class="convertButton @DisabledClass" @onclick="ConvertAndDownloadFile" disabled="@conversionDisabled">Convertir en format Word</button>
     </div>
 </div>
 
 @code
 {
     public string message = k_NoFileSelected;
+    public string HoverClass;
+    public string DisabledClass = k_DisabledClass;
+    public bool conversionDisabled = true;
 
+    const string k_HoverClass = "hover";
+    const string k_DisabledClass = "disabled";
     const string k_NoFileSelected = "Aucun fichier sélectionné";
     const string k_FileSelectedFormat = "Fichier sélectionné: {0} ({1}kB)";
     const string k_FileTooLargeFormat = "{0} ({1}KB) dépasse la taille maximale (500KB).";
@@ -31,28 +36,56 @@
     const int codePage = 28591; //ISO-8859-1 Western European
 
     IBrowserFile selectedFile;
-
     ElementReference fileDropContainer;
-    public string HoverClass;
-    void OnDragEnter(DragEventArgs e) => HoverClass = "hover";
-    void OnDragLeave(DragEventArgs e) => HoverClass = string.Empty;
+
+    void OnDragEnter(DragEventArgs e)
+    {
+        HoverClass = k_HoverClass;  
+        StateHasChanged();
+    }
+
+    void OnDragLeave(DragEventArgs e)
+    { 
+        HoverClass = string.Empty;  
+        StateHasChanged();
+    }
+
+    void EnableConversionButton()
+    {
+        conversionDisabled = false;
+        DisabledClass = string.Empty;
+    }
+
+    void DisableConversionButton()
+    {
+        conversionDisabled = true;
+        DisabledClass = k_DisabledClass;
+    }
 
     public void OnFileChange(InputFileChangeEventArgs args)
     {
+        HoverClass = string.Empty;  
         var file = args.File;
-        var fileSizeKB = file.Size / 1000L;
+        if (file == null)
+        {
+            DisableConversionButton();
+            return;
+        }
 
+        var fileSizeKB = file.Size / 1000L;
         if (file.Size >= k_MaxFileSizeBytes)
         {
             message = string.Format(k_FileTooLargeFormat, file.Name, fileSizeKB);
+            DisableConversionButton();
             return;
         }
         
         message = string.Format(k_FileSelectedFormat, file.Name, fileSizeKB);
-        selectedFile = file;        
+        selectedFile = file; 
+        EnableConversionButton();
         StateHasChanged();
     }
-
+    
     async Task ConvertAndDownloadFile()
     {
         if (selectedFile == null)
