@@ -29,7 +29,7 @@
     const string k_DisabledClass = "disabled";
     const string k_NoFileSelected = "Aucun fichier sélectionné";
     const string k_FileSelectedFormat = "Fichier sélectionné: {0} ({1}kB)";
-    const string k_FileTooLargeFormat = "{0} ({1}KB) dépasse la taille maximale (500KB).";
+    const string k_FileTooLargeFormat = "Erreur: {0} ({1}KB) dépasse la taille maximale (500KB).";
 
     const string k_OutputExtension = ".doc";
     const long k_MaxFileSizeBytes = 500000;
@@ -72,7 +72,7 @@
             return;
         }
 
-        var fileSizeKB = file.Size / 1000L;
+        var fileSizeKB = file.Size / 1024L;
         if (file.Size >= k_MaxFileSizeBytes)
         {
             message = string.Format(k_FileTooLargeFormat, file.Name, fileSizeKB);
@@ -85,7 +85,7 @@
         EnableConversionButton();
         StateHasChanged();
     }
-    
+
     async Task ConvertAndDownloadFile()
     {
         if (selectedFile == null)
