@@ -13,3 +13,7 @@ jobs:
   call-build-web-app:
     name: Build web app
     uses: ./.github/workflows/buildWebApp.yml
+  call-run-tests:
+    name: Run tests
+    uses: ./.github/workflows/runTests.yml
+  
