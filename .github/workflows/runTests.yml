@@ -5,7 +5,7 @@ on:
 
 jobs:
   Run-tests:
-    runs-on: windows-latest  #https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    runs-on: ubuntu-latest  #https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET SDK
