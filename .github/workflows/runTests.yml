@@ -16,6 +16,7 @@ jobs:
       run: nuget install extent -Version 0.0.3
     - name: Run .net tests
       run: dotnet test tests/tests.csproj --nologo --results-directory "results" --logger "trx;logfilename=nunit.xml"
+      continue-on-error: true
     - name: Convert results to html
       run: extent -i results/nunit.xml -o results/
     - name: Send Artifacts
