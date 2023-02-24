@@ -12,8 +12,10 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.x
+    - name: Create tool manifest
+      run: dotnet new tool-manifest
     - name: Install extend nuget package
-      run: dotnet tool install -g extent --version 0.0.3
+      run: dotnet tool install extent --version 0.0.3
     - name: Run .net tests
       run: dotnet test tests/tests.csproj --no-logo --results-directory "results" --logger "trx;logfilename=nunit.xml"
     - name: Convert results to html
