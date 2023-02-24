@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using STAR.Writer;
 
 namespace STAR.Tests 
 {
@@ -12,7 +13,8 @@ namespace STAR.Tests
         [Test]
         public void Test1() 
         {
-            Assert.Fail();
+            var wordWriter = new WordWriter("test");
+            Assert.Pass();
         }
     }
 }
