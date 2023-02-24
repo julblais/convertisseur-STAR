@@ -14,16 +14,11 @@ jobs:
         dotnet-version: 7.x
     - name: Install extend nuget package
       run: nuget install extent -Version 0.0.3
-    - name: show
-      run: |
-        cd extent.0.0.3
-        ls
-        cd ..
     - name: Run .net tests
       run: dotnet test tests/tests.csproj --nologo --results-directory "results" --logger "trx;logfilename=nunit.xml"
       continue-on-error: true
     - name: Convert results to html
-      run: extent.0.0.3/extent -i results/nunit.xml -o results/
+      run: extent.0.0.3/tools/extent -i results/nunit.xml -o results/
     - name: Send Artifacts
       uses: actions/upload-artifact@v3.1.0
       with:
