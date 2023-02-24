@@ -6,7 +6,7 @@ using System.Text;
 
 namespace STAR.ConsoleApp
 {
-    internal class Program
+    class Program
     {
         const string ArgHelp = "--help";
         const string ArgCodePage = "--codepage";

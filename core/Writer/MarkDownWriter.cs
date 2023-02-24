@@ -16,7 +16,7 @@ namespace STAR.Writer
 
         static void WriteCommand(TextWriter writer, in Command command)
         {
-            switch(command.type)
+            switch (command.type)
             {
                 case Command.Type.Text:
                     writer.Write(command.text);
@@ -33,6 +33,8 @@ namespace STAR.Writer
                     writer.WriteLine();
                     writer.WriteLine("___");
                     writer.WriteLine();
+                    break;
+                default:
                     break;
             }
         }
