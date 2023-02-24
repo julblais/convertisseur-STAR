@@ -1,7 +1,7 @@
 name: Build web app
 
 on:
-  workflow_call
+  workflow_call:
     inputs:
       runner:
         required: true
