@@ -12,5 +12,15 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.x
+    - name: Install extend nuget package
+      run: dotnet tool install -g extent --version 0.0.3
     - name: Run .net tests
-      run: dotnet test tests/tests.csproj
+      run: dotnet test tests/tests.csproj --no-logo --results-directory "results" --logger "trx;logfilename=nunit.xml"
+    - name: Convert results to html
+      run: extent -i results/nunit.xml -o results/
+    - name: Send Artifacts
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: nunit-results
+        path: |
+          ./results/
