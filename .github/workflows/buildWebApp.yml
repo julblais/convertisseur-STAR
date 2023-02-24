@@ -2,10 +2,14 @@ name: Build web app
 
 on:
   workflow_call
+    inputs:
+      runner:
+        required: true
+        type: string
 
 jobs:
   Build-web-app:
-    runs-on: ubuntu-latest  #https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    runs-on: ${{ inputs.runner }}  #https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
     steps:
     # uses GitHub's checkout action to checkout code from the master branch
     - uses: actions/checkout@v3

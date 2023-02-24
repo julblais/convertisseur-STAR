@@ -11,7 +11,9 @@ permissions:
 jobs:
   Invoke-Build-webapp:
     name: Build web app
-    uses: ./.github/workflows/buildWebApp.yml
+    uses: ./.github/workflows/buildWebApp.yml    
+    with:
+      runner: "windows-latest"
   Upload-webapp:
     name: Release web app
     runs-on: ubuntu-latest
