@@ -14,9 +14,9 @@ jobs:
         dotnet-version: 7.x
     - name: Run .net tests
       run: dotnet test tests/tests.csproj --nologo --results-directory "results" --logger "html;logfilename=nunit.html"
-      continue-on-error: true
     - name: Send Artifacts
       uses: actions/upload-artifact@v3.1.0
+      if: ${{ always() }}
       with:
         name: nunit-results
         path: |
