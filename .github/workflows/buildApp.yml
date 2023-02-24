@@ -13,3 +13,9 @@ jobs:
   call-build-web-app:
     name: Build web app
     uses: ./.github/workflows/buildWebApp.yml
+    with:
+      runner: "ubuntu-latest"
+  call-run-tests:
+    name: Run tests
+    uses: ./.github/workflows/runTests.yml
+  

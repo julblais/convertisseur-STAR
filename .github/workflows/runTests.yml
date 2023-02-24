@@ -1,0 +1,23 @@
+name: Run tests
+
+on:
+  workflow_call
+
+jobs:
+  Run-tests:
+    runs-on: ubuntu-latest  #https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.x
+    - name: Run .net tests
+      run: dotnet test tests/tests.csproj --nologo --results-directory "results" --logger "html;logfilename=nunit.html"
+    - name: Send Artifacts
+      uses: actions/upload-artifact@v3.1.0
+      if: ${{ always() }}
+      with:
+        name: nunit-results
+        path: |
+          ./results/nunit.html
