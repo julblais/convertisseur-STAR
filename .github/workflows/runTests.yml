@@ -16,9 +16,9 @@ jobs:
       run: nuget install extent -Version 0.0.3 -OutputDirectory extent
     - name: show
       run: |
-      cd extent
-      ls
-      cs ..
+        cd extent
+        ls
+         cs ..
     - name: Run .net tests
       run: dotnet test tests/tests.csproj --nologo --results-directory "results" --logger "trx;logfilename=nunit.xml"
       continue-on-error: true
