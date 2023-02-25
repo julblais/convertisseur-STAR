@@ -11,7 +11,7 @@ namespace STAR.Tests
         public void GeneratorExpected(string file)
         {
             FileUtilities.ReadAndConvertAndSave(
-                InputSource.originalFolder, InputSource.expectedFolder, file,
+                InputSource.OriginalFolder, InputSource.ExpectedFolder, file,
                 Rules.FixEndline,
                 Rules.FixStartRecord,
                 Rules.AddRecordSections,

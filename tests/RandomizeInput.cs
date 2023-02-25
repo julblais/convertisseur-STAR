@@ -9,9 +9,9 @@ namespace STAR.Tests
         [TestCase(InputSource.d_File)]
         public void Randomize(string file)
         {
-            string contents = FileUtilities.ReadFile(InputSource.originalFolder, file);
+            string contents = FileUtilities.ReadFile(InputSource.OriginalFolder, file);
             string randomized = FileUtilities.RandomizeLetters(contents);
-            FileUtilities.SaveFile(randomized, InputSource.originalFolder, file);
+            FileUtilities.SaveFile(randomized, InputSource.OriginalFolder, file);
         }
     }
 }
