@@ -20,9 +20,10 @@ namespace STAR.Tests
         public const string TestFolderName = "tests";
 
         public static string WorkingDir = string.Empty;
-        public static string OriginalFolder => WorkingDir + "\\cases\\original\\";
-        public static string ExpectedFolder => WorkingDir + "\\cases\\expected\\";
-        public static string ResultsFolder => WorkingDir + "\\..\\results\\";
+        public static string CasesFolder => $"{WorkingDir}{Path.DirectorySeparatorChar}cases{Path.DirectorySeparatorChar}";
+        public static string OriginalFolder => $"{CasesFolder}original{Path.DirectorySeparatorChar}";
+        public static string ExpectedFolder => $"{CasesFolder}expected{Path.DirectorySeparatorChar}";
+        public static string ResultsFolder => $"{WorkingDir}{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}results{Path.DirectorySeparatorChar}";
 
     }
 }
