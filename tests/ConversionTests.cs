@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -62,8 +63,18 @@ namespace STAR.Tests
 
         static string ReadOriginalFile(string file) => FileUtilities.ReadFile(InputSource.OriginalFolder, file);
         static string ReadExpectedFile(string file) => FileUtilities.ReadFile(InputSource.ExpectedFolder, file);
-        static void WriteActual(string fileName, string actual) => FileUtilities.SaveFile(actual, InputSource.ResultsFolder, fileName);
-        static void WriteResultFail(string fileName, string diff) => FileUtilities.SaveFile(diff, InputSource.ResultsFolder, fileName, Encoding.UTF8);
+
+        static void WriteActual(string fileName, string actual)
+        {
+            Console.WriteLine($"Writing actual file at path {InputSource.ResultsFolder}{fileName}");
+            FileUtilities.SaveFile(actual, InputSource.ResultsFolder, fileName);
+        }
+
+        static void WriteResultFail(string fileName, string diff)
+        {
+            Console.WriteLine($"Writing actual file at path {InputSource.ResultsFolder}{fileName}");
+            FileUtilities.SaveFile(diff, InputSource.ResultsFolder, fileName, Encoding.UTF8);
+        }
 
         static List<Diff> Diff(string actual, string expected)
         {
