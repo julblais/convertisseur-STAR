@@ -1,44 +1,80 @@
-using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using DiffMatchPatch;
 using NUnit.Framework;
 using STAR.Format;
 
 namespace STAR.Tests
 {
-    readonly struct TestCase
-    {
-        public readonly Formatter.Rule[] rules { get; init; }
-        public readonly string fileName { get; init; }
-
-        public TestCase(string fileName, params Formatter.Rule[] rules)
-        {
-            this.fileName = fileName;
-            this.rules = rules;
-        }
-    }
-
     class ConversionTests
     {
-        static TestCase[] fileCases = new TestCase[]
+        const string outputFolder = "../../../../results/";
+
+        static readonly Formatter.Rule[] Rules = new Formatter.Rule[]
         {
-            new TestCase("testFile.lst", Rules.FixEndline)
+            Format.Rules.FixEndline,
+            Format.Rules.FixStartRecord,
+            Format.Rules.AddRecordSections,
+            Format.Rules.FixLongSpaces,
+            Format.Rules.RemoveItalicsStart,
+            Format.Rules.RemoveItalicsEnd
         };
 
-        [SetUp]
-        public void Setup()
+        [TestCase(InputSource.b_File)]
+        [TestCase(InputSource.d_File)]
+        public void Conversion_ReturnsExpectedResults(string file)
         {
+            string input = ReadOriginalFile(file);
+            string expected = ReadExpectedFile(file);
+
+            string actual = Convert(input);
+            List<Diff> diff = Diff(actual, expected);
+            string html = ConvertDiffToHTML(diff);
+
+            bool hasNoDifference = diff.Count == 1 && diff[0].operation == Operation.EQUAL;
+            if (hasNoDifference)
+            {
+                Assert.Pass();
+                return;
+            }
+
+            WriteActual($"{file}.actual.txt", actual);
+            WriteResultFail($"{file}.html", html);
+
+            int count = diff.Count;
+            Assert.Fail($"Conversion does not give expected results. Differences count {count}.");
         }
 
-        [Test]
-        public void Test1()
+        static string Convert(string input)
         {
-            Assert.Pass();
+            IEnumerable<Command> commands = Rules.ApplyTo(input);
+
+            var rawWriter = new RawWriter();
+            using var memoryStream = new MemoryStream();
+            using var writer = new StreamWriter(memoryStream, FileUtilities.encoding);
+            commands.WriteTo(rawWriter, writer);
+
+            writer.Flush();
+            memoryStream.Seek(0, SeekOrigin.Begin);
+
+            using var streamReader = new StreamReader(memoryStream, FileUtilities.encoding);
+            return streamReader.ReadToEnd();
         }
 
-        [TestCaseSource(nameof(fileCases))]
-        public void Test2(string file)
+        static string ReadOriginalFile(string file) => FileUtilities.ReadFile(InputSource.originalFolder, file);
+        static string ReadExpectedFile(string file) => FileUtilities.ReadFile(InputSource.expectedFolder, file);
+        static void WriteActual(string fileName, string actual) => FileUtilities.SaveFile(actual, outputFolder, fileName);
+        static void WriteResultFail(string fileName, string diff) => FileUtilities.SaveFile(diff, outputFolder, fileName, Encoding.UTF8);
+
+        static List<Diff> Diff(string actual, string expected)
         {
-            Console.WriteLine(testCase.fileName);
-            Console.WriteLine(testCase.rules);
+            var differ = new diff_match_patch();
+            List<Diff> diff = differ.diff_main(expected, actual);
+            differ.diff_cleanupEfficiency(diff);
+            return diff;
         }
+
+        static string ConvertDiffToHTML(List<Diff> diffs) => diff_match_patch.diff_prettyHtml(diffs);
     }
 }
