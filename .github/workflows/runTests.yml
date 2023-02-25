@@ -20,4 +20,4 @@ jobs:
       with:
         name: nunit-results
         path: |
-          ./results/nunit.html
+          ./results/
