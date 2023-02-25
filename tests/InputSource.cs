@@ -1,4 +1,4 @@
-﻿namespace STAR.Tests
+namespace STAR.Tests
 {
     static class InputSource
     {

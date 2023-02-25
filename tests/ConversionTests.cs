@@ -16,7 +16,7 @@ namespace STAR.Tests
         }
     }
 
-    class Tests
+    class ConversionTests
     {
         static TestCase[] fileCases = new TestCase[]
         {
@@ -35,7 +35,7 @@ namespace STAR.Tests
         }
 
         [TestCaseSource(nameof(fileCases))]
-        public void Test2(TestCase testCase)
+        public void Test2(string file)
         {
             Console.WriteLine(testCase.fileName);
             Console.WriteLine(testCase.rules);
