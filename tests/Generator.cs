@@ -3,6 +3,7 @@ using STAR.Format;
 
 namespace STAR.Tests
 {
+    [Ignore("Used to generate input files")]
     class Generator
     {
         [TestCase(InputSource.b_File)]

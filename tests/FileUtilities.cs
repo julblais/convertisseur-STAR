@@ -10,7 +10,7 @@ namespace STAR.Tests
     {
         const int seed = 0x123456;
         const int codePage = 28591; //ISO-8859-1 Western European
-        static readonly Encoding encoding = Encoding.GetEncoding(codePage);
+        public static readonly Encoding encoding = Encoding.GetEncoding(codePage);
 
         public static string ReadFile(string folder, string fileName)
         {
@@ -36,7 +36,13 @@ namespace STAR.Tests
             commands.WriteTo(documentWriter, wr);
         }
 
+
         public static void SaveFile(string content, string folder, string fileName)
+        {
+            SaveFile(content, folder, fileName, encoding);
+        }
+
+        public static void SaveFile(string content, string folder, string fileName, Encoding encoding)
         {
             string outputPath = folder + fileName;
             using StreamWriter wr = new(outputPath, false, encoding);
