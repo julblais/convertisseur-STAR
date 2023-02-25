@@ -21,6 +21,12 @@ namespace STAR.Tests
             Format.Rules.RemoveItalicsEnd
         };
 
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Directory.CreateDirectory(outputFolder);
+        }
+
         [TestCase(InputSource.b_File)]
         [TestCase(InputSource.d_File)]
         public void Conversion_ReturnsExpectedResults(string file)
