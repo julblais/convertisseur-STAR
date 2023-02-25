@@ -15,7 +15,7 @@ namespace STAR.Tests
             Format.Rules.FixEndline,
             Format.Rules.FixStartRecord,
             Format.Rules.AddRecordSections,
-            //Format.Rules.FixLongSpaces,
+            Format.Rules.FixLongSpaces,
             Format.Rules.RemoveItalicsStart,
             Format.Rules.RemoveItalicsEnd
         };
@@ -66,13 +66,13 @@ namespace STAR.Tests
 
         static void WriteActual(string fileName, string actual)
         {
-            Console.WriteLine($"Writing actual file at path {InputSource.ResultsFolder}{fileName}");
+            Console.WriteLine($"Writing actual file: {InputSource.ResultsFolder}{fileName}");
             FileUtilities.SaveFile(actual, InputSource.ResultsFolder, fileName);
         }
 
         static void WriteResultFail(string fileName, string diff)
         {
-            Console.WriteLine($"Writing actual file at path {InputSource.ResultsFolder}{fileName}");
+            Console.WriteLine($"Writing results file: {InputSource.ResultsFolder}{fileName}");
             FileUtilities.SaveFile(diff, InputSource.ResultsFolder, fileName, Encoding.UTF8);
         }
 

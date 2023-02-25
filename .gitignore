@@ -6,3 +6,4 @@ docs/*
 **/*.csproj.user
 bflat/*
 output/*
+results/*
