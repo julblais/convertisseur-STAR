@@ -1,3 +1,5 @@
+#pragma warning disable
+
 /*
  * Diff Match and Patch
  * Copyright 2018 The diff-match-patch Authors.
@@ -2294,3 +2296,4 @@ namespace DiffMatchPatch {
     }
   }
 }
+#pragma warning restore
