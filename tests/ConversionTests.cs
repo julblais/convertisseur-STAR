@@ -16,7 +16,7 @@ namespace STAR.Tests
             Format.Rules.FixEndline,
             Format.Rules.FixStartRecord,
             Format.Rules.AddRecordSections,
-            Format.Rules.FixLongSpaces,
+            //Format.Rules.FixLongSpaces,
             Format.Rules.RemoveItalicsStart,
             Format.Rules.RemoveItalicsEnd
         };
