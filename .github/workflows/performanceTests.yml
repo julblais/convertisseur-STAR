@@ -24,8 +24,7 @@ jobs:
       run:  dotnet run performance/performance.csproj -c Release --nologo
     - name: Send Artifacts
       uses: actions/upload-artifact@v3.1.0
-      if: ${{ always() }}
       with:
-        name: benchmark-results
+        name: benchmark-results@${{ github.event.inputs.target_branch }}
         path: |
           ./performance/BenchmarkDotNet.Artifacts/results
