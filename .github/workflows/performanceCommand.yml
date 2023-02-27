@@ -32,7 +32,7 @@ jobs:
       - name: Get PR branch name
         id: get_branch_name
         run: |          
-          BRANCH_NAME=$(gh pr view $PR_NUMBER --json baseRefName --jq .baseRefName)
+          BRANCH_NAME=$(gh pr view $PR_NUMBER --json headRefName --jq .headRefName)
           echo Branch name is $BRANCH_NAME
           echo "{branch}={$BRANCH_NAME}" >> $GITHUB_OUTPUT
         env:
