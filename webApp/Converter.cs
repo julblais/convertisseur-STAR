@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using STAR.Format;
 using STAR.Writer;
@@ -8,7 +8,7 @@ namespace webApp
 {
     public static class Converter
     {
-        public static int codepage = 28591; //ISO-8859-1 Western European
+        public static readonly int codepage = 28591; //ISO-8859-1 Western European
 
         public static async Task<string> Convert(IBrowserFile file, long maxFileSizeBytes)
         {

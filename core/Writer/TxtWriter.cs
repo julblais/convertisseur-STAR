@@ -1,12 +1,12 @@
-﻿using STAR.Format;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using STAR.Format;
 
 namespace STAR.Writer
 {
-    public class MarkDownWriter : IDocumentWriter
+    public class TxtWriter : IDocumentWriter
     {
-        public string extension => "md";
+        public string extension => "txt";
 
         public void WriteCommands(IEnumerable<Command> commands, TextWriter writer)
         {
@@ -23,15 +23,16 @@ namespace STAR.Writer
                     break;
                 case Command.Type.Newline:
                     writer.WriteLine();
-                    writer.WriteLine();
                     break;
                 case Command.Type.ItalicsBegin:
+                    writer.Write("<i>");
+                    break;
                 case Command.Type.ItalicsEnd:
-                    writer.Write('*');
+                    writer.Write("</i>");
                     break;
                 case Command.Type.NewSection:
                     writer.WriteLine();
-                    writer.WriteLine("___");
+                    writer.WriteLine("-----------------------");
                     writer.WriteLine();
                     break;
                 default:

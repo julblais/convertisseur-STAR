@@ -4,10 +4,9 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
-
     <IsPackable>false</IsPackable>
-
     <IsPublishable>False</IsPublishable>
+    <RootNamespace>STAR.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

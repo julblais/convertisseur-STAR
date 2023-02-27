@@ -6,7 +6,7 @@ using System.Text;
 
 namespace STAR.ConsoleApp
 {
-    internal class Program
+    class Program
     {
         const string ArgHelp = "--help";
         const string ArgCodePage = "--codepage";
@@ -15,6 +15,7 @@ namespace STAR.ConsoleApp
 
         const string WordStringFormat = "word";
         const string MarkdownStringFormat = "markdown";
+        const string TxtStringFormat = "txt";
 
         static string[] filePaths;
         static string outputFormat = WordStringFormat;
@@ -101,6 +102,8 @@ namespace STAR.ConsoleApp
                 return new WordWriter(fileName);
             else if (format == MarkdownStringFormat)
                 return new MarkDownWriter();
+            else if (format == TxtStringFormat)
+                return new TxtWriter();
             return null;
         }
 
@@ -117,7 +120,7 @@ Arguments:
 Options:
     --help       Displays help
     --version    Displays version
-    --format     Defines output format (word|markdown). Default is word.
+    --format     Defines output format (word|markdown|txt). Default is word.
     --codepage   Changes input codepage. Default is ISO-8859-1 Western European.
 ");
         }

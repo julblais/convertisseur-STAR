@@ -1,4 +1,4 @@
-﻿namespace STAR
+namespace STAR
 {
     public static class Version
     {
@@ -6,6 +6,6 @@
         public const int Minor = 7;
         public const int Patch = 1;
 
-        public static string AsString = $"{Major}.{Minor}.{Patch}";
+        public static readonly string AsString = $"{Major}.{Minor}.{Patch}";
     }
 }

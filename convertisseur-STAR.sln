@@ -15,9 +15,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webApp", "webApp\webApp.csp
 		{028BD28F-8734-4DFC-A12A-8D4EBC4E58C8} = {028BD28F-8734-4DFC-A12A-8D4EBC4E58C8}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{C40E7780-6E17-4FAE-B216-603434B2C355}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tests", "tests\tests.csproj", "{C40E7780-6E17-4FAE-B216-603434B2C355}"
 	ProjectSection(ProjectDependencies) = postProject
 		{028BD28F-8734-4DFC-A12A-8D4EBC4E58C8} = {028BD28F-8734-4DFC-A12A-8D4EBC4E58C8}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{69C86729-3E26-493F-A0E7-DD8758E51EB1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Global

@@ -63,7 +63,7 @@ namespace STAR.Writer
 
         static void WriteHeader(string title, TextWriter writer)
         {
-            var headerFormatted = string.Format(headerFormat, title);
+            string headerFormatted = string.Format(headerFormat, title);
             writer.Write(headerFormatted);
         }
 
@@ -92,6 +92,8 @@ namespace STAR.Writer
                     writer.WriteLine(NewLine);
                     writer.WriteLine(NewLine);
                     writer.WriteLine();
+                    break;
+                default:
                     break;
             }
         }
