@@ -2,6 +2,10 @@ name: Run performance tests
 
 on:
   workflow_dispatch:
+    inputs:
+      target_branch:
+        type: string
+        required: true
   workflow_call:
     inputs:
       target_branch:
