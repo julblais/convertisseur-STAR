@@ -36,7 +36,6 @@ namespace STAR.Tests
             commands.WriteTo(documentWriter, wr);
         }
 
-
         public static void SaveFile(string content, string folder, string fileName)
         {
             SaveFile(content, folder, fileName, encoding);
