@@ -34,6 +34,7 @@ jobs:
         run: |          
           BRANCH_NAME=$(gh pr view $PR_NUMBER --json headRefName --jq .headRefName)
           echo Branch name is $BRANCH_NAME
+          echo {branch}={$BRANCH_NAME}
           echo {branch}={$BRANCH_NAME} >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
