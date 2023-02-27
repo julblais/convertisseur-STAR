@@ -70,8 +70,15 @@ jobs:
           path: candidate/
       - name: Compose and write message
         run: |
-          echo: Branch name: ${{needs.pre-setup.outputs.pr_branch_name}}
+          echo Branch name: ${{needs.pre-setup.outputs.pr_branch_name}}
           REF_MSG=$(cat reference/STAR.Performance.ConversionBenchmark-report-github.md)
           CANDIDATE_MSG=$(cat candidate/STAR.Performance.ConversionBenchmark-report-github.md)
           echo ref: $REF_MSG
           echo can: $CANDIDATE_MSG
+          PR_COMMENT=$(echo -e "## Performance results on this branch" "\n" "$REF_MSG" "\n" "## Performance results on `main`" "\n" "$CANDIDATE_MSG")
+      - name: Write results
+        run: |
+          gh pr comment $PR_BRANCH --body "${PR_COMMENT}"     
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_BRANCH: ${{ needs.pre-setup.outputs.pr_branch_name }}
