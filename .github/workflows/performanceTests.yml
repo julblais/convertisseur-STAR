@@ -27,4 +27,4 @@ jobs:
       with:
         name: benchmark-results@${{ github.event.inputs.target_branch }}
         path: |
-          ./performance/BenchmarkDotNet.Artifacts/results
+          ./BenchmarkDotNet.Artifacts/results
