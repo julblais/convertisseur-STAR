@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     # run only when a comment is made on a PR AND the comment starts with the +performance command
     if: ${{ github.event.issue.pull_request && startsWith(github.event.comment.body, '+performance') }}
+    outputs:
+      pr_branch_name: ${{ steps.get_branch_name.outputs.branch }}
     steps:
       - name: Write greeting comment
         uses: actions/github-script@v6
@@ -32,8 +34,6 @@ jobs:
         run: |          
           BRANCH_NAME=$(gh pr view $PR_NUMBER --json baseRefName --jq .baseRefName)
           echo "::set-output name=branch::$BRANCH_NAME"
-        outputs:
-          pr_branch_name: ${{ steps.get_branch_name.outputs.branch }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.issue.number }}  
