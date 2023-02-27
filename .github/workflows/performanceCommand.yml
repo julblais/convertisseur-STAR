@@ -33,7 +33,8 @@ jobs:
         id: get_branch_name
         run: |          
           BRANCH_NAME=$(gh pr view $PR_NUMBER --json baseRefName --jq .baseRefName)
-          echo "::set-output name=branch::$BRANCH_NAME"
+          echo Branch name is $BRANCH_NAME
+          echo "{branch}={$BRANCH_NAME}" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.issue.number }}  
