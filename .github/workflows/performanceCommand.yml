@@ -4,8 +4,8 @@ on:
     types: [created]
     
 jobs:
-  add-perf-results:
-    name: Log performance test results
+  pre-setup:
+    name: Performance command setup
     permissions:
       issues: read
       pull-requests: write
@@ -28,21 +28,35 @@ jobs:
       - name: Clone repo, just because
         uses: actions/checkout@v3
       - name: Get PR branch name
+        id: get_branch_name
         run: |          
           BRANCH_NAME=$(gh pr view $PR_NUMBER --json baseRefName --jq .baseRefName)
-          echo Branch name is $BRANCH_NAME
-          echo "PR_BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "::set-output name=branch::$BRANCH_NAME"
+        outputs:
+          pr_branch_name: ${{ steps.get_branch_name.outputs.branch }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.issue.number }}  
-      - name: Run performance test on reference
-        uses: ./.github/workflows/performanceTests.yml
-        with:
-          target_branch: main      
-      - name: Run performance test on candidate
-        uses: ./.github/workflows/performanceTests.yml
-        with:
-          target_branch: ${{ env.PR_BRANCH_NAME }}
+  run-reference-perf:
+    name: Run performance tests on reference (main)
+    uses: ./.github/workflows/performanceTests.yml
+      with:
+        target_branch: main
+    needs: [pre-setup]
+  run-candidate-perf:
+    name: Run performance tests on pr
+    uses: ./.github/workflows/performanceTests.yml
+      with:
+        target_branch: ${{needs.pre-setup.outputs.pr_branch_name}}
+    needs: [pre-setup]
+  create-message:
+    name: Write results to PR
+    needs:  [pre-setup, run-reference-perf, run-candidate-perf]
+    runs-on: ubuntu-latest   
+    permissions:
+      issues: read
+      pull-requests: write
+    steps:
       - name: Download reference artifacts
         uses: actions/download-artifact@v3
         with:
@@ -51,10 +65,11 @@ jobs:
       - name: Download pr artifacts
         uses: actions/download-artifact@v3
         with:
-          name: benchmark-results@${{ env.PR_BRANCH_NAME }}
+          name: benchmark-results@${{needs.pre-setup.outputs.pr_branch_name}}
           path: candidate/
       - name: Compose and write message
         run: |
+          echo: Branch name: ${{needs.pre-setup.outputs.pr_branch_name}}
           REF_MSG=$(cat reference/STAR.Performance.ConversionBenchmark-report-github.md)
           CANDIDATE_MSG=$(cat candidate/STAR.Performance.ConversionBenchmark-report-github.md)
           echo ref: $REF_MSG
