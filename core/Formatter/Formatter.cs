@@ -1,6 +1,7 @@
-﻿using STAR.Writer;
+using STAR.Writer;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace STAR.Format
 {
@@ -14,6 +15,8 @@ namespace STAR.Format
             {
                 Command.CreateText(str)
             };
+
+            Thread.Sleep(2000);
 
             CommandContext context = new(str, commands);
 
