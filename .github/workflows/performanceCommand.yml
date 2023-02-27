@@ -32,6 +32,9 @@ jobs:
           BRANCH_NAME=$(gh pr view $PR_NUMBER --json baseRefName --jq .baseRefName)
           echo Branch name is $BRANCH_NAME
           echo "PR_BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.issue.number }}  
       - name: Run performance test on reference
         uses: ./.github/workflows/performanceTests.yml
         with:
