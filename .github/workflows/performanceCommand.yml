@@ -40,14 +40,14 @@ jobs:
   run-reference-perf:
     name: Run performance tests on reference (main)
     uses: ./.github/workflows/performanceTests.yml
-      with:
-        target_branch: main
+    with:
+      target_branch: main
     needs: [pre-setup]
   run-candidate-perf:
     name: Run performance tests on pr
     uses: ./.github/workflows/performanceTests.yml
-      with:
-        target_branch: ${{needs.pre-setup.outputs.pr_branch_name}}
+    with:
+      target_branch: ${{needs.pre-setup.outputs.pr_branch_name}}
     needs: [pre-setup]
   create-message:
     name: Write results to PR
