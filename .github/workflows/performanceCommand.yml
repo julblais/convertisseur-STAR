@@ -80,7 +80,7 @@ jobs:
           PR_COMMENT=$(echo -e "## Performance results on this branch" "\n" "$REF_MSG" "\n" "## Performance results on *main*" "\n" "$CANDIDATE_MSG")
           echo Comment: $PR_COMMENT
       - name: Write results
-        run: gh pr comment $PR_BRANCH --body "${PR_COMMENT}"     
+        run: gh pr comment $PR_BRANCH --body "$PR_COMMENT"     
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_BRANCH: ${{ needs.pre-setup.outputs.pr_branch_name }}
