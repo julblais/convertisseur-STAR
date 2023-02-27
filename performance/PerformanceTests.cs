@@ -1,30 +1,49 @@
-using System;
-using System.Security.Cryptography;
+using System.IO;
+using System.Text;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using Dia2Lib;
+using STAR.Format;
 
 namespace STAR.Performance
 {
     [MemoryDiagnoser]
     public class Md5VsSha256
     {
-        private const int N = 10000;
-        private readonly byte[] data;
+        const int CodePage = 28591; //ISO-8859-1 Western European
+        static readonly Encoding Encoding = Encoding.GetEncoding(CodePage);
 
-        private readonly SHA256 sha256 = SHA256.Create();
-        private readonly MD5 md5 = MD5.Create();
+        string m_Data = string.Empty;
 
-        public Md5VsSha256()
+        [IterationSetup]
+        public void IterationSetup()
         {
-            data = new byte[N];
-            new Random(42).NextBytes(data);
+            //read perf file
+            m_Data = ReadFile(InputSource.PerfFolder, InputSource.perfFile);
         }
 
         [Benchmark]
-        public byte[] Sha256() => sha256.ComputeHash(data);
+        public void ConvertFile()
+        {
+            var rules = new Formatter.Rule[]
+            {
+                Rules.FixEndline,
+                Rules.FixStartRecord,
+                Rules.AddRecordSections,
+                Rules.FixLongSpaces,
+                Rules.RemoveItalicsStart,
+                Rules.RemoveItalicsEnd
+            };
 
-        [Benchmark]
-        public byte[] Md5() => md5.ComputeHash(data);
+            return rules.ApplyTo(contents);
+        }
+
+        static string ReadFile(string folder, string fileName)
+        {
+            string path = folder + fileName;
+            using var sr = new StreamReader(File.Open(path, FileMode.Open), Encoding);
+            return sr.ReadToEnd();
+        }
     }
 
     public class Program

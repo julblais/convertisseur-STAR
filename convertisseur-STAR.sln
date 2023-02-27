@@ -26,6 +26,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "performance", "performance\performance.csproj", "{649C819A-9280-4932-877D-A6FC99B35956}"
+	ProjectSection(ProjectDependencies) = postProject
+		{028BD28F-8734-4DFC-A12A-8D4EBC4E58C8} = {028BD28F-8734-4DFC-A12A-8D4EBC4E58C8}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
