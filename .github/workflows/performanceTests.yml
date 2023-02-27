@@ -1,6 +1,7 @@
 name: Run performance tests
 
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       target_branch:
@@ -14,7 +15,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
       with:
-        ref: ${{ github.event.inputs.target_branch }}
+        ref: ${{ inputs.target_branch }}
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v3
       with:
@@ -24,6 +25,6 @@ jobs:
     - name: Send Artifacts
       uses: actions/upload-artifact@v3.1.0
       with:
-        name: benchmark-results@${{ github.event.inputs.target_branch }}
+        name: benchmark-results@${{ inputs.target_branch }}
         path: |
           ./BenchmarkDotNet.Artifacts/results
