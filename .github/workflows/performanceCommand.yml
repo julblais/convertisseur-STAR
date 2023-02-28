@@ -77,7 +77,7 @@ jobs:
           CANDIDATE_MSG=$(cat candidate/STAR.Performance.ConversionBenchmark-report-github.md)
           echo ref: $REF_MSG
           echo can: $CANDIDATE_MSG
-          PR_COMMENT=$(echo -e "## Performance results on this branch" "\n" "$REF_MSG" "\n" "## Performance results on *main*" "\n" "$CANDIDATE_MSG")
+          PR_COMMENT=$(echo -e "## Performance results on this branch" "\n" "$CANDIDATE_MSG" "\n" "## Performance results on *main*" "\n" "$REF_MSG")
           echo Comment: $PR_COMMENT
           gh pr comment $PR_BRANCH --body "$PR_COMMENT"     
         env:
