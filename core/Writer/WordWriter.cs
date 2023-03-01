@@ -69,10 +69,10 @@ namespace STAR.Writer
 
         static void WriteCommand(TextWriter writer, in Command command, ref int italicsLevel)
         {
-            switch (command.type)
+            switch (command.Type)
             {
                 case CommandType.Text:
-                    writer.Write(command.text);
+                    writer.Write(command.Text);
                     break;
                 case CommandType.Newline:
                     writer.WriteLine(NewLine);

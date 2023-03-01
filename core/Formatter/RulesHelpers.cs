@@ -50,9 +50,9 @@ namespace STAR.Format
         {
             foreach (var command in ctx.input)
             {
-                if (command.type == CommandType.Text)
+                if (command.Type == CommandType.Text)
                 {
-                    var text = command.textAsSpan;
+                    var text = command.TextAsSpan;
                     var result = text.SplitInTwo(substring);
                     while (!result.IsEmpty()) //found
                     {
@@ -95,9 +95,9 @@ namespace STAR.Format
         {
             foreach (var command in ctx.input)
             {
-                if (command.type == CommandType.Text)
+                if (command.Type == CommandType.Text)
                 {
-                    var text = command.textAsSpan;
+                    var text = command.TextAsSpan;
                     var result = text.SplitInTwo(substring);
                     while (!result.IsEmpty()) //found
                     {

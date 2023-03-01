@@ -18,7 +18,7 @@ namespace STAR.Format
 
             foreach (var command in context.input)
             {
-                var contents = command.textAsSpan;
+                var contents = command.TextAsSpan;
                 foreach (var line in contents.EnumerateLines())
                 {
                     if (line.EndsWith(lineSeparator)) //can remove and skip to next
@@ -66,9 +66,9 @@ namespace STAR.Format
         {
             foreach (Command command in context.input)
             {
-                if (command.type == CommandType.Text)
+                if (command.Type == CommandType.Text)
                 {
-                    if (command.textAsSpan.CompareTo(startGarbage, StringComparison.InvariantCulture) != 0)
+                    if (command.TextAsSpan.CompareTo(startGarbage, StringComparison.InvariantCulture) != 0)
                         context.Add(command);
                 }
                 else
@@ -82,9 +82,9 @@ namespace STAR.Format
 
             foreach (Command command in context.input)
             {
-                if (command.type == CommandType.Text)
+                if (command.Type == CommandType.Text)
                 {
-                    if (!first && command.textAsSpan.Contains(recordSection, StringComparison.InvariantCulture))
+                    if (!first && command.TextAsSpan.Contains(recordSection, StringComparison.InvariantCulture))
                     {
                         context.Add(Command.CreateNewSection());
                         context.Add(command);
