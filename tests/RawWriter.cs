@@ -26,21 +26,21 @@ namespace STAR.Tests
         {
             switch (command.type)
             {
-                case Command.Type.Text:
+                case CommandType.Text:
                     writer.WriteLine(TEXT_CMD);
                     writer.Write(TAB);
                     writer.WriteLine(command.text);
                     break;
-                case Command.Type.Newline:
+                case CommandType.Newline:
                     writer.WriteLine(NEWLINE_CMD);
                     break;
-                case Command.Type.ItalicsBegin:
+                case CommandType.ItalicsBegin:
                     writer.WriteLine(ITALICS_BEGIN_CMD);
                     break;
-                case Command.Type.ItalicsEnd:
+                case CommandType.ItalicsEnd:
                     writer.WriteLine(ITALICS_END_CMD);
                     break;
-                case Command.Type.NewSection:
+                case CommandType.NewSection:
                     writer.WriteLine(NEW_SECTION_CMD);
                     break;
                 default:

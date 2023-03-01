@@ -1,4 +1,4 @@
-﻿using STAR.Format;
+using STAR.Format;
 using System.Collections.Generic;
 using System.IO;
 
@@ -18,18 +18,18 @@ namespace STAR.Writer
         {
             switch (command.type)
             {
-                case Command.Type.Text:
+                case CommandType.Text:
                     writer.Write(command.text);
                     break;
-                case Command.Type.Newline:
+                case CommandType.Newline:
                     writer.WriteLine();
                     writer.WriteLine();
                     break;
-                case Command.Type.ItalicsBegin:
-                case Command.Type.ItalicsEnd:
+                case CommandType.ItalicsBegin:
+                case CommandType.ItalicsEnd:
                     writer.Write('*');
                     break;
-                case Command.Type.NewSection:
+                case CommandType.NewSection:
                     writer.WriteLine();
                     writer.WriteLine("___");
                     writer.WriteLine();

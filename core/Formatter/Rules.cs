@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace STAR.Format
 {
@@ -64,9 +64,9 @@ namespace STAR.Format
 
         public static void FixStartRecord(CommandContext context)
         {
-            foreach (var command in context.input)
+            foreach (Command command in context.input)
             {
-                if (command.type == Command.Type.Text)
+                if (command.type == CommandType.Text)
                 {
                     if (command.textAsSpan.CompareTo(startGarbage, StringComparison.InvariantCulture) != 0)
                         context.Add(command);
@@ -80,9 +80,9 @@ namespace STAR.Format
         {
             bool first = true;
 
-            foreach (var command in context.input)
+            foreach (Command command in context.input)
             {
-                if (command.type == Command.Type.Text)
+                if (command.type == CommandType.Text)
                 {
                     if (!first && command.textAsSpan.Contains(recordSection, StringComparison.InvariantCulture))
                     {

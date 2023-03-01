@@ -1,4 +1,4 @@
-﻿using STAR.Format;
+using STAR.Format;
 using System.Collections.Generic;
 using System.IO;
 
@@ -71,21 +71,21 @@ namespace STAR.Writer
         {
             switch (command.type)
             {
-                case Command.Type.Text:
+                case CommandType.Text:
                     writer.Write(command.text);
                     break;
-                case Command.Type.Newline:
+                case CommandType.Newline:
                     writer.WriteLine(NewLine);
                     break;
-                case Command.Type.ItalicsBegin:
+                case CommandType.ItalicsBegin:
                     writer.Write(BeginItalics);
                     italicsLevel++;
                     break;
-                case Command.Type.ItalicsEnd:
+                case CommandType.ItalicsEnd:
                     writer.Write(EndItalics);
                     italicsLevel--;
                     break;
-                case Command.Type.NewSection:
+                case CommandType.NewSection:
                     while (italicsLevel-- > 0)//close italics scope to avoid spilling italics over the next sections
                         writer.WriteLine(EndItalics);
                     writer.WriteLine();

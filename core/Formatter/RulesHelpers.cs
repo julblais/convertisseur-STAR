@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace STAR.Format
 {
@@ -50,7 +50,7 @@ namespace STAR.Format
         {
             foreach (var command in ctx.input)
             {
-                if (command.type == Command.Type.Text)
+                if (command.type == CommandType.Text)
                 {
                     var text = command.textAsSpan;
                     var result = text.SplitInTwo(substring);
@@ -95,7 +95,7 @@ namespace STAR.Format
         {
             foreach (var command in ctx.input)
             {
-                if (command.type == Command.Type.Text)
+                if (command.type == CommandType.Text)
                 {
                     var text = command.textAsSpan;
                     var result = text.SplitInTwo(substring);
