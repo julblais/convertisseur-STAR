@@ -49,6 +49,16 @@ namespace STAR.Format
                 return "Invalid type";
         }
 
+        public static Command CreateBegin()
+        {
+            return new Command(CommandType.Begin);
+        }
+
+        public static Command CreateEnd()
+        {
+            return new Command(CommandType.End);
+        }
+
         public static Command CreateText(ReadOnlyMemory<char> text)
         {
             return new Command(text);

@@ -12,7 +12,9 @@ namespace STAR.Format
         {
             IEnumerable<Command> commands = new Command[]
             {
-                Command.CreateText(str)
+                Command.CreateBegin(),
+                Command.CreateText(str),
+                Command.CreateEnd()
             };
 
             CommandContext context = new(str, commands);
