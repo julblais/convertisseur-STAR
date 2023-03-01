@@ -24,23 +24,23 @@ namespace STAR.Tests
 
         static void WriteCommand(TextWriter writer, in Command command)
         {
-            switch (command.type)
+            switch (command.Type)
             {
-                case Command.Type.Text:
+                case CommandType.Text:
                     writer.WriteLine(TEXT_CMD);
                     writer.Write(TAB);
-                    writer.WriteLine(command.text);
+                    writer.WriteLine(command.Text);
                     break;
-                case Command.Type.Newline:
+                case CommandType.Newline:
                     writer.WriteLine(NEWLINE_CMD);
                     break;
-                case Command.Type.ItalicsBegin:
+                case CommandType.ItalicsBegin:
                     writer.WriteLine(ITALICS_BEGIN_CMD);
                     break;
-                case Command.Type.ItalicsEnd:
+                case CommandType.ItalicsEnd:
                     writer.WriteLine(ITALICS_END_CMD);
                     break;
-                case Command.Type.NewSection:
+                case CommandType.NewSection:
                     writer.WriteLine(NEW_SECTION_CMD);
                     break;
                 default:

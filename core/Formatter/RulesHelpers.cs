@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace STAR.Format
 {
@@ -6,11 +6,11 @@ namespace STAR.Format
     {
         public static SplitResult SplitInTwo(this ReadOnlySpan<char> text, ReadOnlySpan<char> delimiter)
         {
-            var result = text.IndexOf(delimiter);
+            int result = text.IndexOf(delimiter);
             if (result != -1) //found
             {
-                var first = text.Slice(0, result);
-                var last = text.Slice(result + delimiter.Length);
+                ReadOnlySpan<char> first = text.Slice(0, result);
+                ReadOnlySpan<char> last = text.Slice(result + delimiter.Length);
                 return new SplitResult(first, last);
             }
 
@@ -19,47 +19,47 @@ namespace STAR.Format
 
         public static SplitResult SplitInTwo(this ReadOnlySpan<char> text, char delimiter)
         {
-            var result = text.IndexOf(delimiter);
+            int result = text.IndexOf(delimiter);
             if (result != -1) //found
             {
-                var first = text.Slice(0, result);
-                var last = text.Slice(result + 1);
+                ReadOnlySpan<char> first = text.Slice(0, result);
+                ReadOnlySpan<char> last = text.Slice(result + 1);
                 return new SplitResult(first, last);
             }
 
             return SplitResult.CreateEmpty();
         }
 
-        public static ReadOnlySpan<char> StartTrimUntil(this ReadOnlySpan<char> text, ReadOnlySpan<char> delimiter)
+        public static ReadOnlySpan<char> StartTrimUntil(this in ReadOnlySpan<char> text, in ReadOnlySpan<char> delimiter)
         {
-            var result = text.IndexOf(delimiter);
+            int result = text.IndexOf(delimiter);
             if (result != -1) //found
                 return text.Slice(result);
             return text;
         }
 
-        public static ReadOnlySpan<char> StartTrimUntil(this ReadOnlySpan<char> text, char delimiter)
+        public static ReadOnlySpan<char> StartTrimUntil(this in ReadOnlySpan<char> text, char delimiter)
         {
-            var result = text.IndexOf(delimiter);
+            int result = text.IndexOf(delimiter);
             if (result != -1) //found
                 return text.Slice(result);
             return text;
         }
 
-        public static void ReplaceSubString(CommandContext ctx, ReadOnlySpan<char> substring, Command toReplace)
+        public static void ReplaceSubString(in CommandContext ctx, in ReadOnlySpan<char> substring, in Command toReplace)
         {
-            foreach (var command in ctx.input)
+            foreach (Command command in ctx.Input)
             {
-                if (command.type == Command.Type.Text)
+                if (command.Type == CommandType.Text)
                 {
-                    var text = command.textAsSpan;
-                    var result = text.SplitInTwo(substring);
+                    ReadOnlySpan<char> text = command.TextAsSpan;
+                    SplitResult result = text.SplitInTwo(substring);
                     while (!result.IsEmpty()) //found
                     {
-                        if (result.first.Length > 0)
-                            ctx.Add(Command.CreateText(result.first));
+                        if (result.First.Length > 0)
+                            ctx.Add(Command.CreateText(result.First));
                         ctx.Add(toReplace);
-                        text = result.last;
+                        text = result.Last;
                         result = text.SplitInTwo(substring);
                     }
                     if (text.Length > 0)
@@ -70,40 +70,40 @@ namespace STAR.Format
             }
         }
 
-        public static void ReplaceSubString(CommandContext ctx, ReadOnlySpan<char> substring, ReadOnlySpan<char> value)
+        public static void ReplaceSubString(in CommandContext ctx, in ReadOnlySpan<char> substring, in ReadOnlySpan<char> value)
         {
             var command = Command.CreateText(value);
             ReplaceSubString(ctx, substring, command);
         }
 
-        public static void ReplaceSubString(CommandContext ctx, char substring, ReadOnlySpan<char> value)
+        public static void ReplaceSubString(in CommandContext ctx, char substring, in ReadOnlySpan<char> value)
         {
             ReplaceSubString(ctx, new ReadOnlySpan<char>(substring), value);
         }
 
-        public static void ReplaceSubString(CommandContext ctx, char substring, Command toReplace)
+        public static void ReplaceSubString(in CommandContext ctx, char substring, in Command toReplace)
         {
             ReplaceSubString(ctx, new ReadOnlySpan<char>(substring), toReplace);
         }
 
-        public static void RemoveSubString(CommandContext ctx, char substring)
+        public static void RemoveSubString(in CommandContext ctx, char substring)
         {
             RemoveSubString(ctx, new ReadOnlySpan<char>(substring));
         }
 
-        public static void RemoveSubString(CommandContext ctx, ReadOnlySpan<char> substring)
+        public static void RemoveSubString(in CommandContext ctx, in ReadOnlySpan<char> substring)
         {
-            foreach (var command in ctx.input)
+            foreach (Command command in ctx.Input)
             {
-                if (command.type == Command.Type.Text)
+                if (command.Type == CommandType.Text)
                 {
-                    var text = command.textAsSpan;
-                    var result = text.SplitInTwo(substring);
+                    ReadOnlySpan<char> text = command.TextAsSpan;
+                    SplitResult result = text.SplitInTwo(substring);
                     while (!result.IsEmpty()) //found
                     {
-                        if (result.first.Length > 0)
-                            ctx.Add(Command.CreateText(result.first));
-                        text = result.last;
+                        if (result.First.Length > 0)
+                            ctx.Add(Command.CreateText(result.First));
+                        text = result.Last;
                         result = text.SplitInTwo(substring);
                     }
                     if (text.Length > 0)

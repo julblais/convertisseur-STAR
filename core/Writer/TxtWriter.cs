@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using STAR.Format;
 
@@ -16,21 +16,21 @@ namespace STAR.Writer
 
         static void WriteCommand(TextWriter writer, in Command command)
         {
-            switch (command.type)
+            switch (command.Type)
             {
-                case Command.Type.Text:
-                    writer.Write(command.text);
+                case CommandType.Text:
+                    writer.Write(command.Text);
                     break;
-                case Command.Type.Newline:
+                case CommandType.Newline:
                     writer.WriteLine();
                     break;
-                case Command.Type.ItalicsBegin:
+                case CommandType.ItalicsBegin:
                     writer.Write("<i>");
                     break;
-                case Command.Type.ItalicsEnd:
+                case CommandType.ItalicsEnd:
                     writer.Write("</i>");
                     break;
-                case Command.Type.NewSection:
+                case CommandType.NewSection:
                     writer.WriteLine();
                     writer.WriteLine("-----------------------");
                     writer.WriteLine();

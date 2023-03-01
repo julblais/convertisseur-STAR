@@ -1,29 +1,29 @@
-﻿using System;
+using System;
 
 namespace STAR.Format
 {
     public static class Rules
     {
-        const string longSpace = "                 "; //17 spaces
-        const char italicStart = '\t';
-        const char italicsEnd = '\u000E';
-        const string startGarbage = "\u0013\u0014\u0001\u0012";
-        const string recordSection = "Record:  ";
+        const string LongSpace = "                 "; //17 spaces
+        const char ItalicStart = '\t';
+        const char ItalicsEnd = '\u000E';
+        const string StartGarbage = "\u0013\u0014\u0001\u0012";
+        const string RecordSection = "Record:  ";
 
-        public static void FixEndline(CommandContext context)
+        public static void FixEndline(in CommandContext context)
         {
             const char endline = '\u001f';
 
             var lineSeparator = new ReadOnlySpan<char>(endline);
 
-            foreach (var command in context.input)
+            foreach (Command command in context.Input)
             {
-                var contents = command.textAsSpan;
-                foreach (var line in contents.EnumerateLines())
+                ReadOnlySpan<char> contents = command.TextAsSpan;
+                foreach (ReadOnlySpan<char> line in contents.EnumerateLines())
                 {
                     if (line.EndsWith(lineSeparator)) //can remove and skip to next
                     {
-                        var text = line.TrimEnd(lineSeparator);
+                        ReadOnlySpan<char> text = line.TrimEnd(lineSeparator);
                         context.Add(Command.CreateText(text));
                         context.Add(Command.CreateNewLine());
                     }
@@ -35,40 +35,40 @@ namespace STAR.Format
             }
         }
 
-        public static void FixLongSpaces(CommandContext context)
+        public static void FixLongSpaces(in CommandContext context)
         {
-            RulesHelpers.ReplaceSubString(context, longSpace, " ");
+            RulesHelpers.ReplaceSubString(context, LongSpace, " ");
         }
 
-        public static void FixItalicsStart(CommandContext context)
+        public static void FixItalicsStart(in CommandContext context)
         {
             var command = Command.CreateItalicsBegin();
-            RulesHelpers.ReplaceSubString(context, italicStart, command);
+            RulesHelpers.ReplaceSubString(context, ItalicStart, command);
         }
 
-        public static void FixItalicsEnd(CommandContext context)
+        public static void FixItalicsEnd(in CommandContext context)
         {
             var command = Command.CreateItalicsEnd();
-            RulesHelpers.ReplaceSubString(context, italicsEnd, command);
+            RulesHelpers.ReplaceSubString(context, ItalicsEnd, command);
         }
 
-        public static void RemoveItalicsStart(CommandContext context)
+        public static void RemoveItalicsStart(in CommandContext context)
         {
-            RulesHelpers.RemoveSubString(context, italicStart);
+            RulesHelpers.RemoveSubString(context, ItalicStart);
         }
 
-        public static void RemoveItalicsEnd(CommandContext context)
+        public static void RemoveItalicsEnd(in CommandContext context)
         {
-            RulesHelpers.RemoveSubString(context, italicsEnd);
+            RulesHelpers.RemoveSubString(context, ItalicsEnd);
         }
 
-        public static void FixStartRecord(CommandContext context)
+        public static void FixStartRecord(in CommandContext context)
         {
-            foreach (var command in context.input)
+            foreach (Command command in context.Input)
             {
-                if (command.type == Command.Type.Text)
+                if (command.Type == CommandType.Text)
                 {
-                    if (command.textAsSpan.CompareTo(startGarbage, StringComparison.InvariantCulture) != 0)
+                    if (command.TextAsSpan.CompareTo(StartGarbage, StringComparison.InvariantCulture) != 0)
                         context.Add(command);
                 }
                 else
@@ -76,15 +76,15 @@ namespace STAR.Format
             }
         }
 
-        public static void AddRecordSections(CommandContext context)
+        public static void AddRecordSections(in CommandContext context)
         {
             bool first = true;
 
-            foreach (var command in context.input)
+            foreach (Command command in context.Input)
             {
-                if (command.type == Command.Type.Text)
+                if (command.Type == CommandType.Text)
                 {
-                    if (!first && command.textAsSpan.Contains(recordSection, StringComparison.InvariantCulture))
+                    if (!first && command.TextAsSpan.Contains(RecordSection, StringComparison.InvariantCulture))
                     {
                         context.Add(Command.CreateNewSection());
                         context.Add(command);

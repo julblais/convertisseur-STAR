@@ -119,7 +119,7 @@ namespace STAR.Performance
 
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main(string[] _)
         {
             Summary summary = BenchmarkRunner.Run<ConversionBenchmark>();
         }

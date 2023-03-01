@@ -1,5 +1,6 @@
-﻿using STAR.Format;
+using STAR.Format;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace STAR.Writer
@@ -63,29 +64,29 @@ namespace STAR.Writer
 
         static void WriteHeader(string title, TextWriter writer)
         {
-            string headerFormatted = string.Format(headerFormat, title);
+            string headerFormatted = string.Format(CultureInfo.InvariantCulture, headerFormat, title);
             writer.Write(headerFormatted);
         }
 
         static void WriteCommand(TextWriter writer, in Command command, ref int italicsLevel)
         {
-            switch (command.type)
+            switch (command.Type)
             {
-                case Command.Type.Text:
-                    writer.Write(command.text);
+                case CommandType.Text:
+                    writer.Write(command.Text);
                     break;
-                case Command.Type.Newline:
+                case CommandType.Newline:
                     writer.WriteLine(NewLine);
                     break;
-                case Command.Type.ItalicsBegin:
+                case CommandType.ItalicsBegin:
                     writer.Write(BeginItalics);
                     italicsLevel++;
                     break;
-                case Command.Type.ItalicsEnd:
+                case CommandType.ItalicsEnd:
                     writer.Write(EndItalics);
                     italicsLevel--;
                     break;
-                case Command.Type.NewSection:
+                case CommandType.NewSection:
                     while (italicsLevel-- > 0)//close italics scope to avoid spilling italics over the next sections
                         writer.WriteLine(EndItalics);
                     writer.WriteLine();

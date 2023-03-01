@@ -1,50 +1,51 @@
-﻿using System;
+using System;
 
 namespace STAR.Format
 {
-    public readonly record struct Command
+    public enum CommandType
     {
-        public enum Type
+        Text,
+        Newline,
+        ItalicsBegin,
+        ItalicsEnd,
+        NewSection,
+    }
+
+    public readonly struct Command
+    {
+        public readonly CommandType Type { get; init; }
+        public readonly ReadOnlyMemory<char> Text { get; init; }
+        public ReadOnlySpan<char> TextAsSpan => Text.Span;
+
+        public Command(ReadOnlyMemory<char> text)
         {
-            Text,
-            Newline,
-            ItalicsBegin,
-            ItalicsEnd,
-            NewSection,
+            Type = CommandType.Text;
+            Text = text;
         }
 
-        public readonly Type type;
-        public readonly ReadOnlyMemory<char> text;
-        public ReadOnlySpan<char> textAsSpan => text.Span;
-
-        Command(Type type, ReadOnlyMemory<char> text)
+        public Command(CommandType type)
         {
-            this.type = type;
-            this.text = text;
-        }
-
-        Command(Type type)
-        {
-            this.type = type;
-            text = string.Empty.AsMemory();
+            Type = type;
+            Text = ReadOnlyMemory<char>.Empty;
         }
 
         public override string ToString()
         {
-            if (type == Type.Text)
-                return $"Text: {text}";
-            else if (type == Type.Newline)
+            if (Type == CommandType.Text)
+                return $"Text: {Text}";
+            else if (Type == CommandType.Newline)
                 return "Endl";
-            else if (type == Type.ItalicsBegin)
+            else if (Type == CommandType.ItalicsBegin)
                 return "<ItalicsBegin>";
-            else if (type == Type.ItalicsEnd)
+            else if (Type == CommandType.ItalicsEnd)
                 return "<ItalicsEnd>";
-            else return "Invalid type";
+            else
+                return "Invalid type";
         }
 
         public static Command CreateText(ReadOnlyMemory<char> text)
         {
-            return new Command(Type.Text, text);
+            return new Command(text);
         }
 
         public static Command CreateText(ReadOnlySpan<char> text)
@@ -54,32 +55,32 @@ namespace STAR.Format
 
         public static Command CreateText(string text)
         {
-            return new Command(Type.Text, text.AsMemory());
+            return new Command(text.AsMemory());
         }
 
         public static Command CreateEmptyText()
         {
-            return new Command(Type.Text, ReadOnlyMemory<char>.Empty);
+            return new Command(ReadOnlyMemory<char>.Empty);
         }
 
         public static Command CreateNewLine()
         {
-            return new Command(Type.Newline);
+            return new Command(CommandType.Newline);
         }
 
         public static Command CreateNewSection()
         {
-            return new Command(Type.NewSection);
+            return new Command(CommandType.NewSection);
         }
 
         public static Command CreateItalicsBegin()
         {
-            return new Command(Type.ItalicsBegin);
+            return new Command(CommandType.ItalicsBegin);
         }
 
         public static Command CreateItalicsEnd()
         {
-            return new Command(Type.ItalicsEnd);
+            return new Command(CommandType.ItalicsEnd);
         }
     }
 }
