@@ -56,10 +56,10 @@ namespace STAR.Format
                     SplitResult result = text.SplitInTwo(substring);
                     while (!result.IsEmpty()) //found
                     {
-                        if (result.first.Length > 0)
-                            ctx.Add(Command.CreateText(result.first));
+                        if (result.First.Length > 0)
+                            ctx.Add(Command.CreateText(result.First));
                         ctx.Add(toReplace);
-                        text = result.last;
+                        text = result.Last;
                         result = text.SplitInTwo(substring);
                     }
                     if (text.Length > 0)
@@ -101,9 +101,9 @@ namespace STAR.Format
                     SplitResult result = text.SplitInTwo(substring);
                     while (!result.IsEmpty()) //found
                     {
-                        if (result.first.Length > 0)
-                            ctx.Add(Command.CreateText(result.first));
-                        text = result.last;
+                        if (result.First.Length > 0)
+                            ctx.Add(Command.CreateText(result.First));
+                        text = result.Last;
                         result = text.SplitInTwo(substring);
                     }
                     if (text.Length > 0)

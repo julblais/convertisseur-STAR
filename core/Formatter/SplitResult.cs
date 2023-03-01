@@ -1,16 +1,16 @@
-﻿using System;
+using System;
 
 namespace STAR.Format
 {
     readonly ref struct SplitResult
     {
-        public readonly ReadOnlySpan<char> first;
-        public readonly ReadOnlySpan<char> last;
+        public readonly ReadOnlySpan<char> First { get; init; }
+        public readonly ReadOnlySpan<char> Last { get; init; }
 
         public SplitResult(ReadOnlySpan<char> first, ReadOnlySpan<char> last)
         {
-            this.first = first;
-            this.last = last;
+            First = first;
+            Last = last;
         }
 
         public static SplitResult CreateEmpty()
@@ -20,7 +20,7 @@ namespace STAR.Format
 
         public readonly bool IsEmpty()
         {
-            return first.Length == 0 && last.Length == 0;
+            return First.Length == 0 && Last.Length == 0;
         }
     }
 }
