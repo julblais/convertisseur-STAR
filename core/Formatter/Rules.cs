@@ -16,7 +16,7 @@ namespace STAR.Format
 
             var lineSeparator = new ReadOnlySpan<char>(endline);
 
-            foreach (var command in context.input)
+            foreach (var command in context.Input)
             {
                 var contents = command.TextAsSpan;
                 foreach (var line in contents.EnumerateLines())
@@ -64,7 +64,7 @@ namespace STAR.Format
 
         public static void FixStartRecord(CommandContext context)
         {
-            foreach (Command command in context.input)
+            foreach (Command command in context.Input)
             {
                 if (command.Type == CommandType.Text)
                 {
@@ -80,7 +80,7 @@ namespace STAR.Format
         {
             bool first = true;
 
-            foreach (Command command in context.input)
+            foreach (Command command in context.Input)
             {
                 if (command.Type == CommandType.Text)
                 {

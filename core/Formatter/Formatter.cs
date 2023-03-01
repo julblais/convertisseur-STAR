@@ -1,4 +1,4 @@
-﻿using STAR.Writer;
+using STAR.Writer;
 using System.Collections.Generic;
 using System.IO;
 
@@ -17,13 +17,13 @@ namespace STAR.Format
 
             CommandContext context = new(str, commands);
 
-            foreach (var rule in rules)
+            foreach (Rule rule in rules)
             {
                 rule.Invoke(context);
-                context = new(str, context.output);
+                context = new(str, context.Output);
             }
 
-            return context.input;
+            return context.Input;
         }
 
         public static void WriteTo(this IEnumerable<Command> commands, IDocumentWriter writer, TextWriter textWriter)

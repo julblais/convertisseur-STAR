@@ -48,7 +48,7 @@ namespace STAR.Format
 
         public static void ReplaceSubString(CommandContext ctx, ReadOnlySpan<char> substring, Command toReplace)
         {
-            foreach (var command in ctx.input)
+            foreach (var command in ctx.Input)
             {
                 if (command.Type == CommandType.Text)
                 {
@@ -93,7 +93,7 @@ namespace STAR.Format
 
         public static void RemoveSubString(CommandContext ctx, ReadOnlySpan<char> substring)
         {
-            foreach (var command in ctx.input)
+            foreach (var command in ctx.Input)
             {
                 if (command.Type == CommandType.Text)
                 {

@@ -1,23 +1,23 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace STAR.Format
 {
     public readonly struct CommandContext
     {
-        public readonly string originalContent;
-        public readonly IEnumerable<Command> input;
-        public readonly ICollection<Command> output;
+        public readonly string OriginalContent { get; init; }
+        public readonly IEnumerable<Command> Input { get; init; }
+        public readonly ICollection<Command> Output { get; init; }
 
         public CommandContext(string content, IEnumerable<Command> input)
         {
-            originalContent = content;
-            this.input = input;
-            output = new List<Command>();
+            OriginalContent = content;
+            Input = input;
+            Output = new List<Command>();
         }
 
         public readonly void Add(Command command)
         {
-            output.Add(command);
+            Output.Add(command);
         }
     }
 }
