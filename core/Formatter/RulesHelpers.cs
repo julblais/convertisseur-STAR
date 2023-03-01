@@ -6,11 +6,11 @@ namespace STAR.Format
     {
         public static SplitResult SplitInTwo(this ReadOnlySpan<char> text, ReadOnlySpan<char> delimiter)
         {
-            var result = text.IndexOf(delimiter);
+            int result = text.IndexOf(delimiter);
             if (result != -1) //found
             {
-                var first = text.Slice(0, result);
-                var last = text.Slice(result + delimiter.Length);
+                ReadOnlySpan<char> first = text.Slice(0, result);
+                ReadOnlySpan<char> last = text.Slice(result + delimiter.Length);
                 return new SplitResult(first, last);
             }
 
@@ -19,11 +19,11 @@ namespace STAR.Format
 
         public static SplitResult SplitInTwo(this ReadOnlySpan<char> text, char delimiter)
         {
-            var result = text.IndexOf(delimiter);
+            int result = text.IndexOf(delimiter);
             if (result != -1) //found
             {
-                var first = text.Slice(0, result);
-                var last = text.Slice(result + 1);
+                ReadOnlySpan<char> first = text.Slice(0, result);
+                ReadOnlySpan<char> last = text.Slice(result + 1);
                 return new SplitResult(first, last);
             }
 
@@ -32,7 +32,7 @@ namespace STAR.Format
 
         public static ReadOnlySpan<char> StartTrimUntil(this ReadOnlySpan<char> text, ReadOnlySpan<char> delimiter)
         {
-            var result = text.IndexOf(delimiter);
+            int result = text.IndexOf(delimiter);
             if (result != -1) //found
                 return text.Slice(result);
             return text;
@@ -40,7 +40,7 @@ namespace STAR.Format
 
         public static ReadOnlySpan<char> StartTrimUntil(this ReadOnlySpan<char> text, char delimiter)
         {
-            var result = text.IndexOf(delimiter);
+            int result = text.IndexOf(delimiter);
             if (result != -1) //found
                 return text.Slice(result);
             return text;
@@ -48,12 +48,12 @@ namespace STAR.Format
 
         public static void ReplaceSubString(CommandContext ctx, ReadOnlySpan<char> substring, Command toReplace)
         {
-            foreach (var command in ctx.Input)
+            foreach (Command command in ctx.Input)
             {
                 if (command.Type == CommandType.Text)
                 {
-                    var text = command.TextAsSpan;
-                    var result = text.SplitInTwo(substring);
+                    ReadOnlySpan<char> text = command.TextAsSpan;
+                    SplitResult result = text.SplitInTwo(substring);
                     while (!result.IsEmpty()) //found
                     {
                         if (result.first.Length > 0)
@@ -93,12 +93,12 @@ namespace STAR.Format
 
         public static void RemoveSubString(CommandContext ctx, ReadOnlySpan<char> substring)
         {
-            foreach (var command in ctx.Input)
+            foreach (Command command in ctx.Input)
             {
                 if (command.Type == CommandType.Text)
                 {
-                    var text = command.TextAsSpan;
-                    var result = text.SplitInTwo(substring);
+                    ReadOnlySpan<char> text = command.TextAsSpan;
+                    SplitResult result = text.SplitInTwo(substring);
                     while (!result.IsEmpty()) //found
                     {
                         if (result.first.Length > 0)
