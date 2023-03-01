@@ -12,6 +12,8 @@ namespace STAR.Tests
         const string ITALICS_BEGIN_CMD = "BEGIN ITALICS";
         const string ITALICS_END_CMD = "END ITALICS";
         const string NEW_SECTION_CMD = "NEW SECTION";
+        const string BEGIN_CMD = "BEGIN";
+        const string END_CMD = "END";
         const char TAB = '\t';
 
         public string extension => "txt";
@@ -26,6 +28,12 @@ namespace STAR.Tests
         {
             switch (command.Type)
             {
+                case CommandType.Begin:
+                    writer.WriteLine(BEGIN_CMD);
+                    break;
+                case CommandType.End:
+                    writer.WriteLine(END_CMD);
+                    break;
                 case CommandType.Text:
                     writer.WriteLine(TEXT_CMD);
                     writer.Write(TAB);

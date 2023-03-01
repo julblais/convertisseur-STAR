@@ -4,6 +4,8 @@ namespace STAR.Format
 {
     public enum CommandType
     {
+        Begin,
+        End,
         Text,
         Newline,
         ItalicsBegin,
@@ -39,6 +41,10 @@ namespace STAR.Format
                 return "<ItalicsBegin>";
             else if (Type == CommandType.ItalicsEnd)
                 return "<ItalicsEnd>";
+            else if (Type == CommandType.Begin)
+                return "Begin commands";
+            else if (Type == CommandType.End)
+                return "End commands";
             else
                 return "Invalid type";
         }
