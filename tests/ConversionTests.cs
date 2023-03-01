@@ -51,13 +51,13 @@ namespace STAR.Tests
 
             var rawWriter = new RawWriter();
             using var memoryStream = new MemoryStream();
-            using var writer = new StreamWriter(memoryStream, FileUtilities.encoding);
+            using var writer = new StreamWriter(memoryStream, FileUtilities.Encoding);
             commands.WriteTo(rawWriter, writer);
 
             writer.Flush();
             memoryStream.Seek(0, SeekOrigin.Begin);
 
-            using var streamReader = new StreamReader(memoryStream, FileUtilities.encoding);
+            using var streamReader = new StreamReader(memoryStream, FileUtilities.Encoding);
             return streamReader.ReadToEnd();
         }
 

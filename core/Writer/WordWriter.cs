@@ -1,5 +1,6 @@
 using STAR.Format;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace STAR.Writer
@@ -63,7 +64,7 @@ namespace STAR.Writer
 
         static void WriteHeader(string title, TextWriter writer)
         {
-            string headerFormatted = string.Format(headerFormat, title);
+            string headerFormatted = string.Format(CultureInfo.InvariantCulture, headerFormat, title);
             writer.Write(headerFormatted);
         }
 

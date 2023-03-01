@@ -1,6 +1,7 @@
-﻿using STAR.Format;
+using STAR.Format;
 using STAR.Writer;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -52,7 +53,7 @@ namespace STAR.ConsoleApp
                 return;
             }
 
-            foreach(var filePath in filePaths)
+            foreach (string filePath in filePaths)
                 ConvertFile(filePath, outputFormat);
 
             Console.WriteLine();
@@ -80,11 +81,11 @@ namespace STAR.ConsoleApp
                 contents = sr.ReadToEnd();
             }
 
-            var commands = rules.ApplyTo(contents);
-            var fileName = Path.GetFileNameWithoutExtension(filePath);
+            IEnumerable<Command> commands = rules.ApplyTo(contents);
+            string fileName = Path.GetFileNameWithoutExtension(filePath);
 
-            var documentWriter = CreateDocumentWriter(fileName, format);
-            var outputPath = $"{fileName}.{documentWriter.extension}";
+            IDocumentWriter documentWriter = CreateDocumentWriter(fileName, format);
+            string outputPath = $"{fileName}.{documentWriter.extension}";
 
             Console.WriteLine($"Writing to file: {outputPath}");
             using (StreamWriter wr = new(outputPath))

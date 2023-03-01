@@ -19,7 +19,7 @@ namespace STAR.Format
             foreach (Command command in context.Input)
             {
                 ReadOnlySpan<char> contents = command.TextAsSpan;
-                foreach (var line in contents.EnumerateLines())
+                foreach (ReadOnlySpan<char> line in contents.EnumerateLines())
                 {
                     if (line.EndsWith(lineSeparator)) //can remove and skip to next
                     {

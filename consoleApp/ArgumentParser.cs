@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -46,9 +46,9 @@ namespace STAR.ConsoleApp
 
             if (args.Length > 0)
             {
-                foreach (var arg in args)
+                foreach (string arg in args)
                 {
-                    var isOption = arg.StartsWith("--", StringComparison.InvariantCultureIgnoreCase);
+                    bool isOption = arg.StartsWith("--", StringComparison.InvariantCultureIgnoreCase);
 
                     if (!isOption)
                         output.Add(arg);
@@ -69,9 +69,8 @@ namespace STAR.ConsoleApp
 
         static TValue ConvertTo<TValue>(string argument, string argumentValue)
         {
-            object converted = Convert.ChangeType(argumentValue, typeof(TValue), CultureInfo.InvariantCulture);
-            if (converted == null)
-                throw new InvalidOperationException($"Cannot parse argument value {argumentValue} for {argument}");
+            object converted = Convert.ChangeType(argumentValue, typeof(TValue), CultureInfo.InvariantCulture)
+                ?? throw new InvalidOperationException($"Cannot parse argument value {argumentValue} for {argument}");
             return (TValue)converted;
         }
     }

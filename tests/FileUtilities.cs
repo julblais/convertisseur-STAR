@@ -8,14 +8,14 @@ namespace STAR.Tests
 {
     public static class FileUtilities
     {
-        const int seed = 0x123456;
-        const int codePage = 28591; //ISO-8859-1 Western European
-        public static readonly Encoding encoding = Encoding.GetEncoding(codePage);
+        const int Seed = 0x123456;
+        const int CodePage = 28591; //ISO-8859-1 Western European
+        public static readonly Encoding Encoding = Encoding.GetEncoding(CodePage);
 
         public static string ReadFile(string folder, string fileName)
         {
             string path = folder + fileName;
-            using var sr = new StreamReader(File.Open(path, FileMode.Open), encoding);
+            using var sr = new StreamReader(File.Open(path, FileMode.Open), Encoding);
             return sr.ReadToEnd();
         }
 
@@ -32,13 +32,13 @@ namespace STAR.Tests
             var documentWriter = new RawWriter();
             string outputPath = folder + fileName;
 
-            using StreamWriter wr = new(outputPath, false, encoding);
+            using StreamWriter wr = new(outputPath, false, Encoding);
             commands.WriteTo(documentWriter, wr);
         }
 
         public static void SaveFile(string content, string folder, string fileName)
         {
-            SaveFile(content, folder, fileName, encoding);
+            SaveFile(content, folder, fileName, Encoding);
         }
 
         public static void SaveFile(string content, string folder, string fileName, Encoding encoding)
@@ -51,7 +51,7 @@ namespace STAR.Tests
         public static string RandomizeLetters(string input)
         {
             const string allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random(seed);
+            var random = new Random(Seed);
 
             var builder = new StringBuilder(input.Length);
             foreach (char c in input)
