@@ -6,7 +6,7 @@ namespace STAR.Format
 {
     public static class Formatter
     {
-        public delegate void Rule(CommandContext context);
+        public delegate void Rule(in CommandContext context);
 
         public static IEnumerable<Command> ApplyTo(this IEnumerable<Rule> rules, string str)
         {

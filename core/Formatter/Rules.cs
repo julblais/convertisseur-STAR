@@ -10,7 +10,7 @@ namespace STAR.Format
         const string StartGarbage = "\u0013\u0014\u0001\u0012";
         const string RecordSection = "Record:  ";
 
-        public static void FixEndline(CommandContext context)
+        public static void FixEndline(in CommandContext context)
         {
             const char endline = '\u001f';
 
@@ -35,34 +35,34 @@ namespace STAR.Format
             }
         }
 
-        public static void FixLongSpaces(CommandContext context)
+        public static void FixLongSpaces(in CommandContext context)
         {
             RulesHelpers.ReplaceSubString(context, LongSpace, " ");
         }
 
-        public static void FixItalicsStart(CommandContext context)
+        public static void FixItalicsStart(in CommandContext context)
         {
             var command = Command.CreateItalicsBegin();
             RulesHelpers.ReplaceSubString(context, ItalicStart, command);
         }
 
-        public static void FixItalicsEnd(CommandContext context)
+        public static void FixItalicsEnd(in CommandContext context)
         {
             var command = Command.CreateItalicsEnd();
             RulesHelpers.ReplaceSubString(context, ItalicsEnd, command);
         }
 
-        public static void RemoveItalicsStart(CommandContext context)
+        public static void RemoveItalicsStart(in CommandContext context)
         {
             RulesHelpers.RemoveSubString(context, ItalicStart);
         }
 
-        public static void RemoveItalicsEnd(CommandContext context)
+        public static void RemoveItalicsEnd(in CommandContext context)
         {
             RulesHelpers.RemoveSubString(context, ItalicsEnd);
         }
 
-        public static void FixStartRecord(CommandContext context)
+        public static void FixStartRecord(in CommandContext context)
         {
             foreach (Command command in context.Input)
             {
@@ -76,7 +76,7 @@ namespace STAR.Format
             }
         }
 
-        public static void AddRecordSections(CommandContext context)
+        public static void AddRecordSections(in CommandContext context)
         {
             bool first = true;
 

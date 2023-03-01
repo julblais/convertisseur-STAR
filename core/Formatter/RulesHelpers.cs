@@ -30,7 +30,7 @@ namespace STAR.Format
             return SplitResult.CreateEmpty();
         }
 
-        public static ReadOnlySpan<char> StartTrimUntil(this ReadOnlySpan<char> text, ReadOnlySpan<char> delimiter)
+        public static ReadOnlySpan<char> StartTrimUntil(this in ReadOnlySpan<char> text, in ReadOnlySpan<char> delimiter)
         {
             int result = text.IndexOf(delimiter);
             if (result != -1) //found
@@ -38,7 +38,7 @@ namespace STAR.Format
             return text;
         }
 
-        public static ReadOnlySpan<char> StartTrimUntil(this ReadOnlySpan<char> text, char delimiter)
+        public static ReadOnlySpan<char> StartTrimUntil(this in ReadOnlySpan<char> text, char delimiter)
         {
             int result = text.IndexOf(delimiter);
             if (result != -1) //found
@@ -46,7 +46,7 @@ namespace STAR.Format
             return text;
         }
 
-        public static void ReplaceSubString(CommandContext ctx, ReadOnlySpan<char> substring, Command toReplace)
+        public static void ReplaceSubString(in CommandContext ctx, in ReadOnlySpan<char> substring, in Command toReplace)
         {
             foreach (Command command in ctx.Input)
             {
@@ -70,28 +70,28 @@ namespace STAR.Format
             }
         }
 
-        public static void ReplaceSubString(CommandContext ctx, ReadOnlySpan<char> substring, ReadOnlySpan<char> value)
+        public static void ReplaceSubString(in CommandContext ctx, in ReadOnlySpan<char> substring, in ReadOnlySpan<char> value)
         {
             var command = Command.CreateText(value);
             ReplaceSubString(ctx, substring, command);
         }
 
-        public static void ReplaceSubString(CommandContext ctx, char substring, ReadOnlySpan<char> value)
+        public static void ReplaceSubString(in CommandContext ctx, char substring, in ReadOnlySpan<char> value)
         {
             ReplaceSubString(ctx, new ReadOnlySpan<char>(substring), value);
         }
 
-        public static void ReplaceSubString(CommandContext ctx, char substring, Command toReplace)
+        public static void ReplaceSubString(in CommandContext ctx, char substring, in Command toReplace)
         {
             ReplaceSubString(ctx, new ReadOnlySpan<char>(substring), toReplace);
         }
 
-        public static void RemoveSubString(CommandContext ctx, char substring)
+        public static void RemoveSubString(in CommandContext ctx, char substring)
         {
             RemoveSubString(ctx, new ReadOnlySpan<char>(substring));
         }
 
-        public static void RemoveSubString(CommandContext ctx, ReadOnlySpan<char> substring)
+        public static void RemoveSubString(in CommandContext ctx, in ReadOnlySpan<char> substring)
         {
             foreach (Command command in ctx.Input)
             {
