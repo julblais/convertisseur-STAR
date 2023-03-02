@@ -12,7 +12,7 @@ namespace STAR.Tests
         public void GeneratorExpectedRaw(string inputFile, string outputFile)
         {
             var documentWriter = new RawWriter();
-            string contents = FileUtilities.ReadFile(InputSource.OriginalFolder, inputFile);
+            string contents = FileUtilities.ReadFile(InputSource.OriginalFolder, inputFile, FileUtilities.Encoding);
 
             FileUtilities.ConvertAndSave(contents, InputSource.ExpectedFolder, outputFile,
                 documentWriter, FileUtilities.Encoding,
@@ -29,7 +29,7 @@ namespace STAR.Tests
         public void GeneratorExpectedWord(string inputFile, string outputFile)
         {
             var documentWriter = new WordWriter(outputFile);
-            string contents = FileUtilities.ReadFile(InputSource.OriginalFolder, inputFile);
+            string contents = FileUtilities.ReadFile(InputSource.OriginalFolder, inputFile, FileUtilities.Encoding);
 
             FileUtilities.ConvertAndSave(contents, InputSource.ExpectedFolder, outputFile, documentWriter,
                 Rules.FixEndline,
