@@ -5,8 +5,8 @@ namespace STAR.Tests
     [Ignore("Used to generate input files")]
     class RandomizeInput
     {
-        [TestCase(InputSource.b_File)]
-        [TestCase(InputSource.d_File)]
+        [TestCase(Input.B_File)]
+        [TestCase(Input.D_File)]
         public void Randomize(string file)
         {
             string contents = FileUtilities.ReadFile(InputSource.OriginalFolder, file);

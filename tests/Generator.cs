@@ -6,8 +6,8 @@ namespace STAR.Tests
     [Ignore("Used to generate input files")]
     class Generator
     {
-        [TestCase(InputSource.b_File)]
-        [TestCase(InputSource.d_File)]
+        [TestCase(Input.B_File)]
+        [TestCase(Input.D_File)]
         public void GeneratorExpected(string file)
         {
             FileUtilities.ReadAndConvertAndSave(
