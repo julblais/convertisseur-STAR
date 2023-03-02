@@ -21,7 +21,7 @@ namespace STAR.Tests
                 Rules.AddRecordSections,
                 Rules.FixLongSpaces,
                 Rules.RemoveItalicsStart,
-                Rules.RemoveItalicsEnd); ;
+                Rules.RemoveItalicsEnd);
         }
 
         [TestCase(Input.B_File, Expected.Word.B_File)]
