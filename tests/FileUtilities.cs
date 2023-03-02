@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using STAR.Format;
+using STAR.Writer;
 
 namespace STAR.Tests
 {
@@ -19,21 +20,22 @@ namespace STAR.Tests
             return sr.ReadToEnd();
         }
 
-        public static void ReadAndConvertAndSave(string sourceFolder, string outputFolder, string fileName, params Formatter.Rule[] rules)
+        public static void ReadAndConvertAndSave(string inputFolder, string outputFolder,
+            string inputFileName, string outputFileName,
+            IDocumentWriter writer, params Formatter.Rule[] rules)
         {
-            string contents = ReadFile(sourceFolder, fileName);
-            ConvertAndSave(contents, outputFolder, fileName, rules);
+            string contents = ReadFile(inputFolder, inputFileName);
+            ConvertAndSave(contents, outputFolder, outputFileName, writer, rules);
         }
 
-        public static void ConvertAndSave(string content, string folder, string fileName, params Formatter.Rule[] rules)
+        public static void ConvertAndSave(string content, string folder, string fileName, IDocumentWriter writer, params Formatter.Rule[] rules)
         {
             IEnumerable<Command> commands = rules.ApplyTo(content);
 
-            var documentWriter = new RawWriter();
             string outputPath = folder + fileName;
 
             using StreamWriter wr = new(outputPath, false, Encoding);
-            commands.WriteTo(documentWriter, wr);
+            commands.WriteTo(writer, wr);
         }
 
         public static void SaveFile(string content, string folder, string fileName)

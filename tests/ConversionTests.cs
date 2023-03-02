@@ -25,8 +25,8 @@ namespace STAR.Tests
 
         public static class Word
         {
-            public const string B_File = "b_Word.txt";
-            public const string D_File = "d_Word.txt";
+            public const string B_File = "b_Word.doc";
+            public const string D_File = "d_Word.doc";
         }
     }
 
