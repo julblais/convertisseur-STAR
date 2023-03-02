@@ -46,10 +46,10 @@ namespace STAR.Tests
         [TestCase(Input.D_File, Expected.Raw.D_File)]
         public void Conversion_Raw_ReturnsExpectedResults(string inputFile, string expectedFile)
         {
-            string input = ReadOriginalFile(inputFile);
-            string expected = ReadExpectedFile(expectedFile);
+            string input = FileUtilities.ReadFile(InputSource.OriginalFolder, inputFile, FileUtilities.Encoding);
+            string expected = FileUtilities.ReadFile(InputSource.ExpectedFolder, expectedFile, FileUtilities.Encoding);
 
-            string actual = Convert(new RawWriter(), input);
+            string actual = Convert(new RawWriter(), FileUtilities.Encoding, input);
             List<Diff> diff = Diff(actual, expected);
             string html = ConvertDiffToHTML(diff);
 
@@ -66,15 +66,15 @@ namespace STAR.Tests
             int count = diff.Count;
             Assert.Fail($"Conversion does not give expected results. Differences count {count}.");
         }
-        /*
-        [TestCase(Input.B_File)]
-        [TestCase(Input.D_File)]
-        public void Conversion_Word_ReturnsExpectedResults(string file)
-        {
-            string input = ReadOriginalFile(file);
-            string expected = ReadExpectedFile(file);
 
-            string actual = Convert(new WordWriter(file), input);
+        [TestCase(Input.B_File, Expected.Word.B_File)]
+        [TestCase(Input.D_File, Expected.Word.D_File)]
+        public void Conversion_Word_ReturnsExpectedResults(string inputFile, string expectedFile)
+        {
+            string input = FileUtilities.ReadFile(InputSource.OriginalFolder, inputFile, FileUtilities.Encoding);
+            string expected = FileUtilities.ReadFile(InputSource.ExpectedFolder, expectedFile);
+
+            string actual = Convert(new WordWriter(expectedFile), input);
             List<Diff> diff = Diff(actual, expected);
             string html = ConvertDiffToHTML(diff);
 
@@ -85,30 +85,38 @@ namespace STAR.Tests
                 return;
             }
 
-            WriteActual($"{file}.actual.doc", actual);
-            WriteResultFail($"{file}.html", html);
+            WriteActual($"{inputFile}.actual.doc", actual);
+            WriteResultFail($"{inputFile}.html", html);
 
             int count = diff.Count;
             Assert.Fail($"Conversion does not give expected results. Differences count {count}.");
-        }*/
+        }
+
+        static string Convert(IDocumentWriter documentWriter, Encoding encoding, string input)
+        {
+            using var memoryStream = new MemoryStream();
+            using var streamWriter = new StreamWriter(memoryStream, encoding);
+            return Convert(documentWriter, streamWriter, input);
+        }
 
         static string Convert(IDocumentWriter documentWriter, string input)
         {
-            IEnumerable<Command> commands = Rules.ApplyTo(input);
-
             using var memoryStream = new MemoryStream();
-            using var writer = new StreamWriter(memoryStream, FileUtilities.Encoding);
-            commands.WriteTo(documentWriter, writer);
-
-            writer.Flush();
-            memoryStream.Seek(0, SeekOrigin.Begin);
-
-            using var streamReader = new StreamReader(memoryStream, FileUtilities.Encoding);
-            return streamReader.ReadToEnd();
+            using var streamWriter = new StreamWriter(memoryStream);
+            return Convert(documentWriter, streamWriter, input);
         }
 
-        static string ReadOriginalFile(string file) => FileUtilities.ReadFile(InputSource.OriginalFolder, file);
-        static string ReadExpectedFile(string file) => FileUtilities.ReadFile(InputSource.ExpectedFolder, file);
+        static string Convert(IDocumentWriter documentWriter, StreamWriter streamWriter, string input)
+        {
+            IEnumerable<Command> commands = Rules.ApplyTo(input);
+            commands.WriteTo(documentWriter, streamWriter);
+
+            streamWriter.Flush();
+            streamWriter.BaseStream.Seek(0, SeekOrigin.Begin);
+
+            using var streamReader = new StreamReader(streamWriter.BaseStream, streamWriter.Encoding);
+            return streamReader.ReadToEnd();
+        }
 
         static void WriteActual(string fileName, string actual)
         {

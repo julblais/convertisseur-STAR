@@ -13,10 +13,17 @@ namespace STAR.Tests
         const int CodePage = 28591; //ISO-8859-1 Western European
         public static readonly Encoding Encoding = Encoding.GetEncoding(CodePage);
 
+        public static string ReadFile(string folder, string fileName, Encoding encoding)
+        {
+            string path = folder + fileName;
+            using var sr = new StreamReader(File.Open(path, FileMode.Open), encoding);
+            return sr.ReadToEnd();
+        }
+
         public static string ReadFile(string folder, string fileName)
         {
             string path = folder + fileName;
-            using var sr = new StreamReader(File.Open(path, FileMode.Open), Encoding);
+            using var sr = new StreamReader(File.Open(path, FileMode.Open));
             return sr.ReadToEnd();
         }
 
