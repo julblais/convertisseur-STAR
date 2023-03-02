@@ -18,20 +18,25 @@ namespace STAR.Format
 
             foreach (Command command in context.Input)
             {
-                ReadOnlySpan<char> contents = command.TextAsSpan;
-                foreach (ReadOnlySpan<char> line in contents.EnumerateLines())
+                if (command.Type == CommandType.Text)
                 {
-                    if (line.EndsWith(lineSeparator)) //can remove and skip to next
+                    ReadOnlySpan<char> contents = command.TextAsSpan;
+                    foreach (ReadOnlySpan<char> line in contents.EnumerateLines())
                     {
-                        ReadOnlySpan<char> text = line.TrimEnd(lineSeparator);
-                        context.Add(Command.CreateText(text));
-                        context.Add(Command.CreateNewLine());
-                    }
-                    else
-                    {
-                        context.Add(Command.CreateText(line));
+                        if (line.EndsWith(lineSeparator)) //can remove and skip to next
+                        {
+                            ReadOnlySpan<char> text = line.TrimEnd(lineSeparator);
+                            context.Add(Command.CreateText(text));
+                            context.Add(Command.CreateNewLine());
+                        }
+                        else
+                        {
+                            context.Add(Command.CreateText(line));
+                        }
                     }
                 }
+                else
+                    context.Add(command);
             }
         }
 

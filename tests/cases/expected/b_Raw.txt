@@ -1,3 +1,4 @@
+BEGIN
 TEXT
 	Record:  jaRsSS
 NEWLINE
@@ -988,3 +989,4 @@ NEWLINE
 TEXT
 	scOjI            iQMD-JA-bm |g Dbni-e9-7f
 NEWLINE
+END

@@ -1,5 +1,4 @@
 using STAR.Format;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
@@ -43,35 +42,37 @@ namespace STAR.Writer
         const string EndItalics = "</i>";
 
         readonly string m_Title;
+        int m_ItalicsLevel;
 
         public WordWriter(string title)
         {
             m_Title = title;
         }
 
-        public void WriteCommands(IEnumerable<Command> commands, TextWriter writer)
+        void BeginDocument(TextWriter writer)
         {
-            WriteHeader(m_Title, writer);
+            m_ItalicsLevel = 0;
+
+            string headerFormatted = string.Format(CultureInfo.InvariantCulture, headerFormat, m_Title);
+            writer.Write(headerFormatted);
             writer.WriteLine();
+        }
 
-            int italicsLevel = 0;
-
-            foreach (Command command in commands)
-                WriteCommand(writer, command, ref italicsLevel);
-
+        static void EndDocument(TextWriter writer)
+        {
             writer.Write(footer);
         }
 
-        static void WriteHeader(string title, TextWriter writer)
-        {
-            string headerFormatted = string.Format(CultureInfo.InvariantCulture, headerFormat, title);
-            writer.Write(headerFormatted);
-        }
-
-        static void WriteCommand(TextWriter writer, in Command command, ref int italicsLevel)
+        public void WriteCommand(in Command command, TextWriter writer)
         {
             switch (command.Type)
             {
+                case CommandType.Begin:
+                    BeginDocument(writer);
+                    break;
+                case CommandType.End:
+                    EndDocument(writer);
+                    break;
                 case CommandType.Text:
                     writer.Write(command.Text);
                     break;
@@ -80,14 +81,14 @@ namespace STAR.Writer
                     break;
                 case CommandType.ItalicsBegin:
                     writer.Write(BeginItalics);
-                    italicsLevel++;
+                    m_ItalicsLevel++;
                     break;
                 case CommandType.ItalicsEnd:
                     writer.Write(EndItalics);
-                    italicsLevel--;
+                    m_ItalicsLevel--;
                     break;
                 case CommandType.NewSection:
-                    while (italicsLevel-- > 0)//close italics scope to avoid spilling italics over the next sections
+                    while (m_ItalicsLevel-- > 0)//close italics scope to avoid spilling italics over the next sections
                         writer.WriteLine(EndItalics);
                     writer.WriteLine();
                     writer.WriteLine(NewLine);
