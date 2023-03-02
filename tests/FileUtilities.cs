@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using STAR.Format;
+using STAR.Writer;
 
 namespace STAR.Tests
 {
@@ -12,28 +13,38 @@ namespace STAR.Tests
         const int CodePage = 28591; //ISO-8859-1 Western European
         public static readonly Encoding Encoding = Encoding.GetEncoding(CodePage);
 
-        public static string ReadFile(string folder, string fileName)
+        public static string ReadFile(string folder, string fileName, Encoding encoding)
         {
             string path = folder + fileName;
-            using var sr = new StreamReader(File.Open(path, FileMode.Open), Encoding);
+            using var sr = new StreamReader(File.Open(path, FileMode.Open), encoding);
             return sr.ReadToEnd();
         }
 
-        public static void ReadAndConvertAndSave(string sourceFolder, string outputFolder, string fileName, params Formatter.Rule[] rules)
+        public static string ReadFile(string folder, string fileName)
         {
-            string contents = ReadFile(sourceFolder, fileName);
-            ConvertAndSave(contents, outputFolder, fileName, rules);
+            string path = folder + fileName;
+            using var sr = new StreamReader(File.Open(path, FileMode.Open));
+            return sr.ReadToEnd();
         }
 
-        public static void ConvertAndSave(string content, string folder, string fileName, params Formatter.Rule[] rules)
+        public static void ConvertAndSave(string content, string folder, string fileName, IDocumentWriter writer, params Formatter.Rule[] rules)
         {
             IEnumerable<Command> commands = rules.ApplyTo(content);
 
-            var documentWriter = new RawWriter();
             string outputPath = folder + fileName;
 
-            using StreamWriter wr = new(outputPath, false, Encoding);
-            commands.WriteTo(documentWriter, wr);
+            using StreamWriter wr = new(outputPath, false);
+            commands.WriteTo(writer, wr);
+        }
+
+        public static void ConvertAndSave(string content, string folder, string fileName, IDocumentWriter writer, Encoding encoding, params Formatter.Rule[] rules)
+        {
+            IEnumerable<Command> commands = rules.ApplyTo(content);
+
+            string outputPath = folder + fileName;
+
+            using StreamWriter wr = new(outputPath, false, encoding);
+            commands.WriteTo(writer, wr);
         }
 
         public static void SaveFile(string content, string folder, string fileName)

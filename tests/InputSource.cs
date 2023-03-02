@@ -17,8 +17,6 @@ namespace STAR.Tests
             Directory.CreateDirectory(ResultsFolder);
         }
 
-        public const string b_File = "b.txt";
-        public const string d_File = "d.txt";
         public const string TestFolderName = "tests";
         public const string ResultsFolderName = "results";
 
