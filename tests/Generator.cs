@@ -12,15 +12,16 @@ namespace STAR.Tests
         public void GeneratorExpectedRaw(string inputFile, string outputFile)
         {
             var documentWriter = new RawWriter();
-            FileUtilities.ReadAndConvertAndSave(
-                InputSource.OriginalFolder, InputSource.ExpectedFolder,
-                inputFile, outputFile, documentWriter,
+            string contents = FileUtilities.ReadFile(InputSource.OriginalFolder, inputFile);
+
+            FileUtilities.ConvertAndSave(contents, InputSource.ExpectedFolder, outputFile,
+                documentWriter, FileUtilities.Encoding,
                 Rules.FixEndline,
                 Rules.FixStartRecord,
                 Rules.AddRecordSections,
                 Rules.FixLongSpaces,
                 Rules.RemoveItalicsStart,
-                Rules.RemoveItalicsEnd);
+                Rules.RemoveItalicsEnd); ;
         }
 
         [TestCase(Input.B_File, Expected.Word.B_File)]
@@ -28,9 +29,9 @@ namespace STAR.Tests
         public void GeneratorExpectedWord(string inputFile, string outputFile)
         {
             var documentWriter = new WordWriter(outputFile);
-            FileUtilities.ReadAndConvertAndSave(
-                InputSource.OriginalFolder, InputSource.ExpectedFolder,
-                inputFile, outputFile, documentWriter,
+            string contents = FileUtilities.ReadFile(InputSource.OriginalFolder, inputFile);
+
+            FileUtilities.ConvertAndSave(contents, InputSource.ExpectedFolder, outputFile, documentWriter,
                 Rules.FixEndline,
                 Rules.FixStartRecord,
                 Rules.AddRecordSections,

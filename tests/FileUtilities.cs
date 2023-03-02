@@ -20,21 +20,23 @@ namespace STAR.Tests
             return sr.ReadToEnd();
         }
 
-        public static void ReadAndConvertAndSave(string inputFolder, string outputFolder,
-            string inputFileName, string outputFileName,
-            IDocumentWriter writer, params Formatter.Rule[] rules)
-        {
-            string contents = ReadFile(inputFolder, inputFileName);
-            ConvertAndSave(contents, outputFolder, outputFileName, writer, rules);
-        }
-
         public static void ConvertAndSave(string content, string folder, string fileName, IDocumentWriter writer, params Formatter.Rule[] rules)
         {
             IEnumerable<Command> commands = rules.ApplyTo(content);
 
             string outputPath = folder + fileName;
 
-            using StreamWriter wr = new(outputPath, false, Encoding);
+            using StreamWriter wr = new(outputPath, false);
+            commands.WriteTo(writer, wr);
+        }
+
+        public static void ConvertAndSave(string content, string folder, string fileName, IDocumentWriter writer, Encoding encoding, params Formatter.Rule[] rules)
+        {
+            IEnumerable<Command> commands = rules.ApplyTo(content);
+
+            string outputPath = folder + fileName;
+
+            using StreamWriter wr = new(outputPath, false, encoding);
             commands.WriteTo(writer, wr);
         }
 
