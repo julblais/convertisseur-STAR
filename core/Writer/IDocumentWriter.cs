@@ -1,5 +1,4 @@
-﻿using STAR.Format;
-using System.Collections.Generic;
+using STAR.Format;
 using System.IO;
 
 namespace STAR.Writer
@@ -7,6 +6,6 @@ namespace STAR.Writer
     public interface IDocumentWriter
     {
         string extension { get; }
-        void WriteCommands(IEnumerable<Command> commands, TextWriter writer);
+        void WriteCommand(in Command command, TextWriter writer);
     }
 }

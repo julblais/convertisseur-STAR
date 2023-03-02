@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using STAR.Format;
 using STAR.Writer;
@@ -18,13 +17,7 @@ namespace STAR.Tests
 
         public string extension => "txt";
 
-        public void WriteCommands(IEnumerable<Command> commands, TextWriter writer)
-        {
-            foreach (Command command in commands)
-                WriteCommand(writer, command);
-        }
-
-        static void WriteCommand(TextWriter writer, in Command command)
+        public void WriteCommand(in Command command, TextWriter writer)
         {
             switch (command.Type)
             {

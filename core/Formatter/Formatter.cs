@@ -30,7 +30,8 @@ namespace STAR.Format
 
         public static void WriteTo(this IEnumerable<Command> commands, IDocumentWriter writer, TextWriter textWriter)
         {
-            writer.WriteCommands(commands, textWriter);
+            foreach (Command command in commands)
+                writer.WriteCommand(command, textWriter);
         }
     }
 }
