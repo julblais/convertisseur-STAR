@@ -1,6 +1,6 @@
 :root {
-    --primary-color: #f4e6ff;
-    --secondary-color: indigo;
+    --primary-color: #e7e7e7;
+    --secondary-color: rgb(40, 39, 44);
     --font: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
     background: var(--secondary-color);
@@ -119,7 +119,7 @@ a:link {
 }
 
 a:visited {
-    color: #e3c4fd;
+    color: #f0f0f0;
 }
 
 .version {
